@@ -436,7 +436,6 @@ section:last-of-type { border-bottom: none; }
 }
 .triad-node:hover .triad-circle {
   border-color: var(--accent);
-  background: var(--accent-dim);
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(199,80,0,0.10);
 }
@@ -1006,7 +1005,7 @@ footer {
           line.setAttribute('y1', cy(rects[p[0]]));
           line.setAttribute('x2', cx(rects[p[1]]));
           line.setAttribute('y2', cy(rects[p[1]]));
-          line.setAttribute('stroke', '#d4d4d4');
+          line.setAttribute('stroke', '#999999');
           line.setAttribute('stroke-width', '1');
           line.setAttribute('stroke-dasharray', '4 4');
           svg.appendChild(line);
