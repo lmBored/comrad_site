@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "COMRAD Project Page",
+  "entry": "index.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "primary": true,
+  "createdAt": "2026-06-10T12:09:45.946Z",
+  "updatedAt": "2026-06-10T12:09:45.949Z",
+  "sourceSkillId": "agent-browser",
+  "metadata": {
+    "identifier": "comrad-project-page",
+    "artifactType": "text/html",
+    "inferred": false
+  }
+}
