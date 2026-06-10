@@ -375,49 +375,117 @@ section:last-of-type { border-bottom: none; }
 }
 .abstract-box strong { color: var(--fg); }
 
-/* ─── CONTRIBUTIONS ─── */
-.contributions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
+/* ─── CONTRIBUTIONS triad ─── */
+.contrib-triad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 56px;
+  gap: 0;
 }
-.contrib-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 28px;
+.triad-top {
+  display: flex;
+  gap: 200px; /* much more sparse horizontally */
+  justify-content: center;
   position: relative;
-  overflow: hidden;
-  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
-.contrib-card:hover {
-  border-color: var(--border2);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+.triad-bottom {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-top: 12px; 
 }
-.contrib-num {
-  font-size: 2.4rem;
-  font-weight: 700;
-  font-family: var(--font-mono);
-  color: var(--accent);
-  opacity: 0.1;
-  line-height: 1;
+
+/* SVG connector lines sit behind nodes */
+.triad-svg {
   position: absolute;
-  top: 16px;
-  right: 20px;
-  letter-spacing: -0.05em;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
 }
-.contrib-title {
-  font-size: 0.92rem;
+
+.triad-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.triad-circle {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: border-color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s;
+  cursor: default;
+}
+.triad-node:hover .triad-circle {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(199,80,0,0.10);
+}
+.triad-sprite {
+  width: 38px;
+  height: 38px;
+  image-rendering: pixelated;
+  filter: grayscale(60%) brightness(0.85);
+  opacity: 0.65;
+  transition: filter 0.25s, opacity 0.25s;
+}
+.triad-node:hover .triad-sprite {
+  filter: none;
+  opacity: 1;
+}
+.triad-index {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+.triad-label {
+  margin-top: 16px;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--fg);
-  margin-bottom: 8px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  max-width: 180px;
 }
-.contrib-desc {
-  font-size: 0.84rem;
+.triad-desc {
+  margin-top: 6px;
+  font-size: 0.9rem;
   color: var(--muted);
   line-height: 1.6;
+  max-width: 200px;
+}
+
+/* connector SVG wrapper spans the full triad */
+.triad-connector {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 680px) {
+  /* maintain triad shape, scale down elements */
+  .triad-top { gap: 16px; }
+  .triad-circle { width: 130px; height: 130px; }
+  .triad-sprite { width: 30px; height: 30px; }
+  .triad-label { font-size: 0.82rem; max-width: 140px; margin-top: 12px; }
+  .triad-desc { font-size: 0.72rem; max-width: 150px; line-height: 1.5; }
+  .triad-bottom { margin-top: 0px; }
 }
 
 /* ─── SCENARIO CARDS ─── */
@@ -865,40 +933,89 @@ footer {
     <div class="section-header reveal">
       <div class="section-eyebrow">Contributions</div>
       <h2>What We Introduce</h2>
-      <p>Five concrete contributions that collectively close the 3D egocentric gap in cooperative MARL evaluation.</p>
     </div>
-    <div class="contributions-grid">
-      <div class="contrib-card reveal reveal-delay-1">
-        <div class="contrib-num">01</div>
-        <img class="sprite-accent" src="assets/visuals/SPRITES/playa1.png" alt="">
-        <div class="contrib-title">13 Cooperative Scenarios</div>
-        <div class="contrib-desc">Spanning social dilemmas, role asymmetry, spatial &amp; temporal synchronization, and combat coordination — all in 3D first-person.</div>
+
+    <div class="contrib-triad reveal">
+      <!-- top two nodes -->
+      <div class="triad-top" id="triad-top">
+        <div class="triad-node">
+          <div class="triad-circle">
+            <div class="triad-index">01</div>
+            <img class="triad-sprite" src="assets/visuals/SPRITES/playa1.png" alt="">
+          </div>
+          <div class="triad-label">13 Cooperative Scenarios</div>
+          <div class="triad-desc">Social dilemmas, role asymmetry, spatial &amp; temporal sync, and combat; all 3D first-person.</div>
+        </div>
+        <div class="triad-node">
+          <div class="triad-circle">
+            <div class="triad-index">02</div>
+            <img class="triad-sprite" src="assets/visuals/SPRITES/arm1a0.png" alt="">
+          </div>
+          <div class="triad-label">DoomGen + ACL</div>
+          <div class="triad-desc">Voronoi procedural maps with independent task &amp; spatial difficulty axes for curriculum learning.</div>
+        </div>
       </div>
-      <div class="contrib-card reveal reveal-delay-2">
-        <div class="contrib-num">02</div>
-        <img class="sprite-accent" src="assets/visuals/SPRITES/arm1a0.png" alt="">
-        <div class="contrib-title">DoomGen Procedural Maps</div>
-        <div class="contrib-desc">A Voronoi-based map generation library that produces seedable, semantically-consistent layout batches to prevent spatial memorization.</div>
-      </div>
-      <div class="contrib-card reveal reveal-delay-3">
-        <div class="contrib-num">03</div>
-        <img class="sprite-accent" src="assets/visuals/SPRITES/trooa1.png" alt="">
-        <div class="contrib-title">Two-Axis Difficulty Control</div>
-        <div class="contrib-desc">Independent axes for task-mechanical difficulty and spatial difficulty, enabling automated curriculum learning and generalization studies.</div>
-      </div>
-      <div class="contrib-card reveal reveal-delay-4">
-        <div class="contrib-num">04</div>
-        <img class="sprite-accent" src="assets/visuals/SPRITES/bfgga0.png" alt="">
-        <div class="contrib-title">7 CTDE Baselines</div>
-        <div class="contrib-desc">IPPO, MAPPO, HAPPO, IDQN, VDN, QMIX, and QPLEX on a unified high-throughput training stack with ~25K FPS on a single GPU.</div>
-      </div>
-      <div class="contrib-card reveal reveal-delay-1">
-        <div class="contrib-num">05</div>
-        <img class="sprite-accent" src="assets/visuals/SPRITES/ammoa0.png" alt="">
-        <div class="contrib-title">Extensive Empirical Evaluation</div>
-        <div class="contrib-desc">Five-seed evaluation across all scenarios reveals sharp algorithm ranking reversals — establishing visual cooperative MARL as an open frontier.</div>
+      <!-- bottom center node -->
+      <div class="triad-bottom" id="triad-bottom">
+        <div class="triad-node">
+          <div class="triad-circle">
+            <div class="triad-index">03</div>
+            <img class="triad-sprite" src="assets/visuals/SPRITES/bfgga0.png" alt="">
+          </div>
+          <div class="triad-label">7 CTDE Baselines</div>
+          <div class="triad-desc">IPPO, MAPPO, HAPPO, IDQN, VDN, QMIX, QPLEX.</div>
+        </div>
       </div>
     </div>
+
+    <!-- connector lines drawn after layout is known -->
+    <script>
+    (function() {
+      function drawTriadConnectors() {
+        var old = document.getElementById('triad-svg-overlay');
+        if (old) old.remove();
+
+        var triad  = document.querySelector('.contrib-triad');
+        var nodes  = triad.querySelectorAll('.triad-circle');
+        if (nodes.length < 3) return;
+
+        var tRect  = triad.getBoundingClientRect();
+        var rects  = Array.from(nodes).map(function(n) { return n.getBoundingClientRect(); });
+
+        function cx(r) { return r.left + r.width / 2 - tRect.left; }
+        function cy(r) { return r.top + r.height / 2 - tRect.top; }
+
+        var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.id = 'triad-svg-overlay';
+        svg.setAttribute('width', tRect.width);
+        svg.setAttribute('height', tRect.height);
+        svg.style.cssText = 'position:absolute;top:0;left:0;pointer-events:none;z-index:0;overflow:visible';
+
+        var pairs = [[0,1],[0,2],[1,2]];
+        pairs.forEach(function(p) {
+          var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+          line.setAttribute('x1', cx(rects[p[0]]));
+          line.setAttribute('y1', cy(rects[p[0]]));
+          line.setAttribute('x2', cx(rects[p[1]]));
+          line.setAttribute('y2', cy(rects[p[1]]));
+          line.setAttribute('stroke', '#d4d4d4');
+          line.setAttribute('stroke-width', '1');
+          line.setAttribute('stroke-dasharray', '4 4');
+          svg.appendChild(line);
+        });
+
+        triad.style.position = 'relative';
+        triad.insertBefore(svg, triad.firstChild);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', drawTriadConnectors);
+      } else {
+        drawTriadConnectors();
+      }
+      window.addEventListener('resize', drawTriadConnectors);
+    })();
+    </script>
   </section>
 
   <!-- ═══ SCENARIOS ═══ -->
