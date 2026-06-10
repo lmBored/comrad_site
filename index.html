@@ -1184,9 +1184,11 @@ footer {
       <div class="grid-2">
         <div class="figure-block">
           <img src="assets/infras2.png" alt="High-level Architecture Overview">
+          <div class="figure-caption">High-level asynchronous training architecture integrated with Sample Factory.</div>
         </div>
         <div class="figure-block">
           <img src="assets/infras.png" alt="Training Architecture Details">
+          <div class="figure-caption">Detailed view of the distributed rollout and learning components over CPU and GPU.</div>
         </div>
       </div>
     </div>
@@ -1211,7 +1213,7 @@ footer {
     </div>
 
     <!-- Curriculum -->
-    <div class="sub-section reveal">
+    <div class="sub-section reveal" style="margin-bottom: 0;">
       <div class="sub-section-title">Automated Curriculum Learning</div>
       <div class="sub-section-desc">
         COMRAD exposes two orthogonal difficulty axes: task-mechanical difficulty (enemy count, time limits, hazard intensity) and spatial difficulty (DoomGen layout complexity). This factorization makes experimental conclusions sharper and supports curriculum, transfer, and generalization studies.
@@ -1219,15 +1221,12 @@ footer {
       <div class="grid-2" style="align-items: start; gap: 20px;">
         <div class="figure-block" style="margin-bottom: 0;">
           <img src="assets/curriculum_protocol_best.png" alt="Curriculum Protocol Best">
+          <div class="figure-caption"><strong style="color: var(--fg);">Sample efficiency</strong> across curriculum protocols on the <em>Platform Chain</em> task pool. PLR reaches a competitive checkpoint at only 19.1M steps, outperforming sequential progression and OMNI in convergence speed under identical budgets.</div>
         </div>
         <div class="figure-block" style="margin-bottom: 0;">
           <img src="assets/curriculum_protocol_retained.png" alt="Curriculum Protocol Retained">
+          <div class="figure-caption"><strong style="color: var(--fg);">Retained-checkpoint strength</strong> on <em>Platform Chain</em>. Sequential progression achieves the highest peak score (6.94), while OMNI preserves the strongest final retained checkpoint (5.38), highlighting a trade-off between peak performance and stability.</div>
         </div>
-      </div>
-      <div class="figure-caption" style="margin-top: 16px;">
-        Retained-checkpoint comparison for the default <em>Platform Chain</em> curriculum task pool.
-        <strong style="color: var(--fg);">(Left) Sample efficiency:</strong> PLR reaches a competitive checkpoint at only 19.1M steps.
-        <strong style="color: var(--fg);">(Right) Retention:</strong> sequential progression achieves the highest peak score (6.94) while OMNI preserves the strongest final retained checkpoint (5.38).
       </div>
     </div>
   </section>
