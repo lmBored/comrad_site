@@ -471,19 +471,44 @@ pre {
     </div>
 
     <div style="margin-bottom: 60px;">
-      <h3 style="font-size: 20px; margin-bottom: 8px;">DoomGen</h3>
-      <p style="color: var(--muted); margin-bottom: 24px;">DoomGen procedurally generates diverse map layouts, preventing policies from overfitting.</p>
-      <div class="figure-block">
-        <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants">
+      <h3 style="font-size: 20px; margin-bottom: 24px;">DoomGen: Procedural Map Generation</h3>
+      <div class="grid-2" style="align-items: center;">
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants">
+          <div class="figure-caption" style="margin-top: 16px;">Four <em>Armory Siege</em> layouts generated from the same scenario template under different integer seeds. DoomGen preserves the scenario semantics (three outer supply rooms connected to a defended central armory) while varying room geometry, corridor routing, visibility structure, and local traversal distances.</div>
+        </div>
+        <div>
+          <p style="color: var(--muted); margin-bottom: 16px;">
+            To make spatial memorization as difficult as possible, DoomGen avoids traditional orthogonal, grid-based room layouts. It constructs maps starting from a relaxed Voronoi tessellation, grouping irregular cells into semantically defined areas (like spawn rooms and corridors) before translating the graph into valid Doom geometry.
+          </p>
+          <p style="color: var(--muted);">
+            This geometric irregularity broadens the distribution of boundary shapes, sightlines, and local visual cues, exposing algorithms to a distribution of spatial configurations rather than a single memorizable map.
+          </p>
+        </div>
       </div>
     </div>
     
     <div>
-      <h3 style="font-size: 20px; margin-bottom: 8px;">Curriculum Learning</h3>
-      <p style="color: var(--muted); margin-bottom: 24px;">Automated Curriculum Learning (ACL) progressively increases task complexity to stabilize multi-agent credit assignment.</p>
-      <div class="figure-block" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-        <img src="assets/curriculum_protocol_best.png" alt="Curriculum Protocol Best">
-        <img src="assets/curriculum_protocol_retained.png" alt="Curriculum Protocol Retained">
+      <h3 style="font-size: 20px; margin-bottom: 16px;">Automated Curriculum Learning</h3>
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); margin-bottom: 16px;">
+          Automated Curriculum Learning (ACL) progressively increases task complexity to stabilize multi-agent credit assignment. Many cooperative failures in first-person settings are spatial rather than purely strategic&mdash;agents may know the required coordination pattern but fail to execute it reliably when sightlines are blocked.
+        </p>
+        <p style="color: var(--muted);">
+          By testing policies across increasingly irregularly generated instances, COMRAD can measure visual-spatial robustness. A curriculum can increase the challenge by tightening scenario mechanics, broadening the distribution of spatial layouts, or jointly controlling both.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;">
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/curriculum_protocol_best.png" alt="Curriculum Protocol Best">
+        </div>
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/curriculum_protocol_retained.png" alt="Curriculum Protocol Retained">
+        </div>
+      </div>
+      <div class="figure-caption" style="margin-top: 16px;">
+        Retained-checkpoint comparison for the default <em>Platform Chain</em> curriculum task pool. Because the training protocol retains only the best checkpoint and the last two periodic saves, these panels summarize representative behavior rather than dense equal-horizon learning curves. <strong>(Left) Sample efficiency:</strong> PLR produces the earliest strong common-target score, reaching a competitive checkpoint at only 19.1M steps. <strong>(Right) Retention:</strong> sequential progression achieves the highest peak score (6.94), while OMNI preserves the strongest final retained checkpoint (5.38), demonstrating a sample-efficiency versus retention tradeoff across curriculum strategies.
       </div>
     </div>
   </section>
