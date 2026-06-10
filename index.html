@@ -1330,13 +1330,12 @@ footer {
       <div class="section-eyebrow">Reference</div>
       <h2>Citation</h2>
     </div>
-    <pre class="reveal"><code>@inproceedings{
-nguyen2026comrad,
-title={{COMRAD}: A Benchmark for Embodied Cooperative Multi-Agent Reinforcement Learning},
-author={Khoi H.B. Nguyen and Dimitar Zhivkov Zhekov and Tristan Tomilin},
-booktitle={New Frontiers in Game-Theoretic Learning - NExT-Game},
-year={2026},
-url={https://openreview.net/forum?id=bXau6dlyV4}
+    <pre class="reveal"><code>@inproceedings{nguyen2026comrad,
+  title={{COMRAD}: A Benchmark for Embodied Cooperative Multi-Agent Reinforcement Learning},
+  author={Khoi H.B. Nguyen and Dimitar Zhivkov Zhekov and Tristan Tomilin},
+  booktitle={New Frontiers in Game-Theoretic Learning - NExT-Game},
+  year={2026},
+  url={https://openreview.net/forum?id=bXau6dlyV4}
 }</code></pre>
   </section>
 
@@ -1344,7 +1343,7 @@ url={https://openreview.net/forum?id=bXau6dlyV4}
 
 <footer>
   <div class="container">
-    &copy; 2026 Khoi H.B. Nguyen, Dimitar Zhivkov Zhekov, Tristan Tomilin &nbsp;·&nbsp; NeurIPS 2026
+    &copy; <span id="year"></span> Khoi H.B. Nguyen, Dimitar Zhivkov Zhekov, Tristan Tomilin
   </div>
 </footer>
 
@@ -1366,6 +1365,8 @@ url={https://openreview.net/forum?id=bXau6dlyV4}
   }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
   els.forEach(el => io.observe(el));
 })();
+
+document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ── Table auto-scale ── */
 (function fitTables() {
