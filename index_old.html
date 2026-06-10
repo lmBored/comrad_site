@@ -1,0 +1,798 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COMRAD: Embodied MARL Benchmark</title>
+<style>
+:root {
+  --bg:      oklch(99% 0.002 240);
+  --surface: oklch(100% 0 0);
+  --fg:      oklch(18% 0.012 250);
+  --muted:   oklch(54% 0.012 250);
+  --border:  oklch(92% 0.005 250);
+  --accent:  oklch(58% 0.18 255);
+
+  --font-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Nav */
+nav {
+  position: sticky;
+  top: 0;
+  background: color-mix(in oklch, var(--surface) 80%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+  padding: 16px 0;
+}
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.nav-brand { font-weight: 600; font-family: var(--font-display); }
+.nav-links { display: flex; gap: 24px; font-size: 0.9rem; font-weight: 500; }
+.nav-links a { color: var(--muted); }
+.nav-links a:hover { color: var(--fg); text-decoration: none; }
+
+/* Hero */
+.hero {
+  padding: 80px 0 0;
+  text-align: center;
+}
+.hero h1 {
+  font-size: clamp(32px, 5vw, 48px);
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+.hero p.authors {
+  font-size: 1.1rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.hero p.affiliations {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 60px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: all 0.2s;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btn-primary {
+  background: var(--fg);
+  color: var(--surface);
+}
+.btn-primary:hover {
+  background: color-mix(in oklch, var(--fg) 80%, black);
+  text-decoration: none;
+}
+.btn-secondary {
+  background: var(--surface);
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--bg);
+  text-decoration: none;
+}
+
+/* Sections */
+section {
+  padding: 60px 0;
+  border-bottom: 1px solid var(--border);
+}
+section:last-of-type { border-bottom: none; }
+.section-header {
+  margin-bottom: 40px;
+}
+.section-header h2 {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+.section-header p {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 700px;
+}
+
+/* Abstract */
+.abstract-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Grids */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+  .grid-2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .grid-4 { grid-template-columns: 1fr; }
+}
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+.card-img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.card-body {
+  padding: 16px;
+}
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.card-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Figures */
+.figure-block {
+  margin-bottom: 32px;
+}
+.figure-block img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.figure-caption {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 12px;
+}
+
+/* Table */
+.table-responsive {
+  margin-bottom: 32px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  text-align: right;
+}
+table th:first-child, table td:first-child {
+  text-align: left;
+}
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+th {
+  font-weight: 600;
+  background: color-mix(in oklch, var(--surface) 95%, var(--bg));
+  white-space: nowrap;
+}
+td {
+  white-space: nowrap;
+  color: var(--muted);
+}
+tr:last-child td {
+  border-bottom: none;
+}
+.best-score {
+  font-weight: 600;
+  color: var(--fg);
+}
+
+/* Code block */
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--fg);
+}
+
+/* Video Wrapper */
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.video-wrapper img {
+  width: 100%;
+  display: block;
+}
+.play-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.play-overlay svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  margin-left: 4px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-content">
+    <div class="nav-brand">COMRAD</div>
+    <div class="nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#scenarios">Scenarios</a>
+      <a href="#methodology">Methodology</a>
+      <a href="#results">Results</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container">
+
+  <section class="hero">
+    <h1>COMRAD: A Benchmark for Embodied<br>Multi-Agent Reinforcement Learning</h1>
+    <p class="authors">Khoi H.B. Nguyen, Dimitar Zhivkov Zhekov, Tristan Tomilin</p>
+    
+    <div class="hero-buttons">
+      <a href="#" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Paper
+      </a>
+      <a href="#" class="btn btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+        Code
+      </a>
+    </div>
+  </section>
+
+  <section id="abstract">
+    <div class="section-header">
+      <h2>Abstract</h2>
+    </div>
+    <div class="abstract-box">
+      Benchmarks are central to the development and evaluation of multi-agent reinforcement learning (MARL) algorithms. As the cooperative MARL community has grown, two categories of evaluation environments have proven indispensable: low-dimensional feature-vector benchmarks that isolate algorithmic behavior in compact state spaces, and two-dimensional pixel-based benchmarks that rely on overhead visual observations. However, to bridge the gap to real-world embodied settings such as robotics and autonomous navigation, algorithms must handle high-dimensional, 3D egocentric visual complexity. While various 3D environments have been explored for vision-based RL, no existing platform simultaneously provides a standardized, purely cooperative multi-agent benchmark with 3D first-person observations and high-throughput simulation. To address this gap, we introduce <strong>COMRAD</strong>, a <strong>CO</strong>operative <strong>M</strong>ulti-Agent <strong>R</strong>einforcement Le<strong>A</strong>rning benchmark suite in <strong>D</strong>oom, featuring a diverse set of challenging scenarios spanning role asymmetry, temporal synchronization, and spatial navigation.
+    </div>
+  </section>
+
+  <section id="scenarios">
+    <div class="section-header">
+      <h2>13 Cooperative Scenarios</h2>
+      <p>Agents must coordinate solely based on their local visual observations in a 3D first-person egocentric view.</p>
+    </div>
+    <div class="figure-block" style="margin-bottom: 40px;">
+      <img src="assets/categories.png" alt="Scenario Categories">
+      <div class="figure-caption">Taxonomy and categorization of the 13 embodied scenarios in COMRAD.</div>
+    </div>
+    <div class="grid-4">
+      <!-- Generated via script to ensure accuracy -->
+      <div class="card">
+        <img src="assets/1.png" alt="Stag Hunt Arena" class="card-img">
+        <div class="card-body">
+          <div class="card-title">1. Stag Hunt Arena</div>
+          <div class="card-desc">Resolve the hare-vs-stag dilemma under partial observability.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/2.png" alt="Rhythm Sync" class="card-img">
+        <div class="card-body">
+          <div class="card-title">2. Rhythm Sync</div>
+          <div class="card-desc">Synchronize temporal switches without communication.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/3.png" alt="Foraging Commons" class="card-img">
+        <div class="card-body">
+          <div class="card-title">3. Foraging Commons</div>
+          <div class="card-desc">Balance individual harvesting against replenishing a shared pool.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/4.png" alt="Co-op Puzzle" class="card-img">
+        <div class="card-body">
+          <div class="card-title">4. Co-op Puzzle</div>
+          <div class="card-desc">Sequentially unlock gates in a strict turn-based progression.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/5.png" alt="Platform Chain" class="card-img">
+        <div class="card-body">
+          <div class="card-title">5. Platform Chain</div>
+          <div class="card-desc">A physical tether constrains agents to maintain proximity.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/6.png" alt="Armory Siege" class="card-img">
+        <div class="card-body">
+          <div class="card-title">6. Armory Siege</div>
+          <div class="card-desc">Defend a core while rotating members to collect resources.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/7.png" alt="Coop Health Gathering" class="card-img">
+        <div class="card-body">
+          <div class="card-title">7. Coop Health Gathering</div>
+          <div class="card-desc">Navigate a decaying health field together to maximize overlap.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/8.png" alt="Lava Pit" class="card-img">
+        <div class="card-body">
+          <div class="card-title">8. Lava Pit</div>
+          <div class="card-desc">Alternate holding pressure plates to support crossings.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/9.png" alt="Smart Enemies" class="card-img">
+        <div class="card-body">
+          <div class="card-title">9. Smart Enemies</div>
+          <div class="card-desc">Enemies accelerate under concentrated fire, forcing dispersion.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/9.png" alt="Dumb Enemies" class="card-img">
+        <div class="card-body">
+          <div class="card-title">10. Dumb Enemies</div>
+          <div class="card-desc">Enemies flee solo agents but slow near groups.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/11.png" alt="Ammo Carrier" class="card-img">
+        <div class="card-body">
+          <div class="card-title">11. Ammo Carrier</div>
+          <div class="card-desc">A mobile carrier resupplies a stationary defender continuously.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/10.png" alt="Stealth Labyrinth" class="card-img">
+        <div class="card-body">
+          <div class="card-title">12. Stealth Labyrinth</div>
+          <div class="card-desc">A torch-gunner pair survives under extreme asymmetric observability.</div>
+        </div>
+      </div>
+      <div class="card">
+        <img src="assets/12.png" alt="Lava Maze" class="card-img">
+        <div class="card-body">
+          <div class="card-title">13. Lava Maze</div>
+          <div class="card-desc">Form emergent communication between a navigator and a signaller.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="methodology">
+    <div class="section-header">
+      <h2>Methodology</h2>
+      <p>High-throughput infrastructure, procedural generation, and curriculum learning form the backbone of COMRAD.</p>
+    </div>
+    
+    <div style="margin-bottom: 60px;">
+      <h3 style="font-size: 20px; margin-bottom: 8px;">Training Architecture</h3>
+      <p style="color: var(--muted); margin-bottom: 24px;">COMRAD integrates with Sample Factory, enabling highly parallelized asynchronous RL that achieves ~25K FPS during training. A high-level overview of the architecture is provided below.</p>
+      <div class="grid-2">
+        <div class="figure-block">
+          <img src="assets/infras2.png" alt="High-level Architecture Overview">
+        </div>
+        <div class="figure-block">
+          <img src="assets/infras.png" alt="Training Architecture Details">
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 60px;">
+      <h3 style="font-size: 20px; margin-bottom: 24px;">DoomGen: Procedural Map Generation</h3>
+      <div class="grid-2" style="align-items: center;">
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants">
+          <div class="figure-caption" style="margin-top: 16px;">Four <em>Armory Siege</em> layouts generated from the same scenario template under different integer seeds. DoomGen preserves the scenario semantics (three outer supply rooms connected to a defended central armory) while varying room geometry, corridor routing, visibility structure, and local traversal distances.</div>
+        </div>
+        <div>
+          <p style="color: var(--muted); margin-bottom: 16px;">
+            To make spatial memorization as difficult as possible, DoomGen avoids traditional orthogonal, grid-based room layouts. It constructs maps starting from a relaxed Voronoi tessellation, grouping irregular cells into semantically defined areas (like spawn rooms and corridors) before translating the graph into valid Doom geometry.
+          </p>
+          <p style="color: var(--muted);">
+            This geometric irregularity broadens the distribution of boundary shapes, sightlines, and local visual cues, exposing algorithms to a distribution of spatial configurations rather than a single memorizable map.
+          </p>
+        </div>
+      </div>
+    </div>
+    
+    <div>
+      <h3 style="font-size: 20px; margin-bottom: 16px;">Automated Curriculum Learning</h3>
+      <div style="margin-bottom: 24px;">
+        <p style="color: var(--muted); margin-bottom: 16px;">
+          Automated Curriculum Learning (ACL) progressively increases task complexity to stabilize multi-agent credit assignment. Many cooperative failures in first-person settings are spatial rather than purely strategic&mdash;agents may know the required coordination pattern but fail to execute it reliably when sightlines are blocked.
+        </p>
+        <p style="color: var(--muted);">
+          By testing policies across increasingly irregularly generated instances, COMRAD can measure visual-spatial robustness. A curriculum can increase the challenge by tightening scenario mechanics, broadening the distribution of spatial layouts, or jointly controlling both.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;">
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/curriculum_protocol_best.png" alt="Curriculum Protocol Best">
+        </div>
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/curriculum_protocol_retained.png" alt="Curriculum Protocol Retained">
+        </div>
+      </div>
+      <div class="figure-caption" style="margin-top: 16px;">
+        Retained-checkpoint comparison for the default <em>Platform Chain</em> curriculum task pool. Because the training protocol retains only the best checkpoint and the last two periodic saves, these panels summarize representative behavior rather than dense equal-horizon learning curves. <strong>(Left) Sample efficiency:</strong> PLR produces the earliest strong common-target score, reaching a competitive checkpoint at only 19.1M steps. <strong>(Right) Retention:</strong> sequential progression achieves the highest peak score (6.94), while OMNI preserves the strongest final retained checkpoint (5.38), demonstrating a sample-efficiency versus retention tradeoff across curriculum strategies.
+      </div>
+    </div>
+  </section>
+  <section id="results">
+    <div class="section-header">
+      <h2>Results</h2>
+      <p>Performance comparison of 7 established CTDE baselines across the 13 COMRAD scenarios under a 100M-step budget.</p>
+    </div>
+    
+    <div class="table-responsive">
+      <div class="table-scale-wrapper" style="overflow: hidden;">
+        <div class="table-inner" style="transform-origin: top left;">
+          <table>
+            <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>IPPO</th>
+            <th>MAPPO</th>
+            <th>HAPPO</th>
+            <th>IDQN</th>
+            <th>VDN</th>
+            <th>QMIX</th>
+            <th>QPLEX-D</th>
+            <th>QPLEX-Q</th>
+            <th>Ceiling</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Stag Hunt Arena</td>
+            <td>17.55 ± 0.22</td>
+            <td class="best-score">25.66 ± 0.32</td>
+            <td>2.58 ± 0.10</td>
+            <td>14.33 ± 0.18</td>
+            <td>17.96 ± 0.39</td>
+            <td>0.28 ± 0.06</td>
+            <td>1.49 ± 0.10</td>
+            <td>3.42 ± 0.20</td>
+            <td>36</td>
+          </tr>
+          <tr>
+            <td>Rhythm Sync</td>
+            <td>0.59 ± 0.05</td>
+            <td class="best-score">0.65 ± 0.05</td>
+            <td>0.22 ± 0.02</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>1.00</td>
+          </tr>
+          <tr>
+            <td>Foraging Commons</td>
+            <td>2355.64 ± 30.33</td>
+            <td>2510.93 ± 31.18</td>
+            <td>2199.89 ± 39.31</td>
+            <td>2190.70 ± 32.66</td>
+            <td>2327.13 ± 42.84</td>
+            <td class="best-score">2544.89 ± 46.77</td>
+            <td>1905.26 ± 23.66</td>
+            <td>2345.75 ± 39.38</td>
+            <td>21000</td>
+          </tr>
+          <tr>
+            <td>Co-op Puzzle</td>
+            <td>3.03 ± 0.07</td>
+            <td class="best-score">3.88 ± 0.09</td>
+            <td>2.23 ± 0.14</td>
+            <td>0.03 ± 0.01</td>
+            <td>0.07 ± 0.02</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.07 ± 0.03</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>Platform Chain</td>
+            <td>2.00 ± 0.02</td>
+            <td class="best-score">4.78 ± 0.19</td>
+            <td>4.67 ± 0.18</td>
+            <td>0.68 ± 0.06</td>
+            <td>1.12 ± 0.08</td>
+            <td>0.97 ± 0.02</td>
+            <td>3.40 ± 0.22</td>
+            <td>0.97 ± 0.03</td>
+            <td>47</td>
+          </tr>
+          <tr>
+            <td>Armory Siege</td>
+            <td>16.71 ± 2.90</td>
+            <td>19.87 ± 2.32</td>
+            <td>-0.71 ± 1.07</td>
+            <td>10.97 ± 0.98</td>
+            <td>18.32 ± 1.46</td>
+            <td class="best-score">23.12 ± 3.83</td>
+            <td>1.19 ± 0.89</td>
+            <td>14.13 ± 2.47</td>
+            <td>100</td>
+          </tr>
+          <tr>
+            <td>Co-op Health Gathering</td>
+            <td class="best-score">1104.90 ± 117.30</td>
+            <td>553.96 ± 27.82</td>
+            <td>197.74 ± 7.98</td>
+            <td>164.20 ± 2.12</td>
+            <td>573.83 ± 27.28</td>
+            <td>166.43 ± 2.07</td>
+            <td>193.95 ± 5.10</td>
+            <td>267.78 ± 18.39</td>
+            <td>8400</td>
+          </tr>
+          <tr>
+            <td>Lava Pit</td>
+            <td>0.92 ± 0.01</td>
+            <td class="best-score">1.00 ± 0.01</td>
+            <td class="best-score">1.00 ± 0.01</td>
+            <td>0.92 ± 0.01</td>
+            <td>0.80 ± 0.05</td>
+            <td>0.97 ± 0.03</td>
+            <td>0.00 ± 0.01</td>
+            <td class="best-score">1.00 ± 0.01</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>Smart Enemies</td>
+            <td>11.56 ± 0.86</td>
+            <td class="best-score">14.23 ± 0.65</td>
+            <td>6.85 ± 0.38</td>
+            <td>3.30 ± 0.23</td>
+            <td>4.89 ± 0.38</td>
+            <td>0.64 ± 0.08</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.65 ± 0.07</td>
+            <td>84</td>
+          </tr>
+          <tr>
+            <td>Dumb Enemies</td>
+            <td class="best-score">12.44 ± 1.93</td>
+            <td>2.29 ± 0.20</td>
+            <td>1.03 ± 0.13</td>
+            <td>1.07 ± 0.11</td>
+            <td>2.76 ± 0.22</td>
+            <td>1.10 ± 0.15</td>
+            <td>0.00 ± 0.01</td>
+            <td>1.80 ± 0.16</td>
+            <td>90</td>
+          </tr>
+          <tr>
+            <td>Ammo Carrier</td>
+            <td class="best-score">7052.93 ± 483.17</td>
+            <td>1362.73 ± 69.09</td>
+            <td>1340.99 ± 58.07</td>
+            <td>3836.13 ± 384.96</td>
+            <td>2542.51 ± 219.25</td>
+            <td>2379.46 ± 139.55</td>
+            <td>1530.98 ± 59.06</td>
+            <td>2080.97 ± 192.02</td>
+            <td>8400</td>
+          </tr>
+          <tr>
+            <td>Stealth Labyrinth</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td class="best-score">0.21 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>1.00</td>
+          </tr>
+          <tr>
+            <td>Lava Maze</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>0.00 ± 0.01</td>
+            <td>6</td>
+          </tr>
+        </tbody>
+      </table>
+        </div>
+      </div>
+      <div class="figure-caption" style="padding: 16px; border-top: 1px solid var(--border);">Full baseline matrix at the common 100M-step frontier. Entries report mean ± 95% CI half-width over five independent runs. Ceiling is the theoretical maximum score achievable under optimal play for each scenario.</div>
+    </div>
+    
+    <div class="grid-2" style="margin-top: 40px;">
+      <div class="figure-block">
+        <img src="assets/baseline_learning_curves.png" alt="Learning Curves">
+        <div class="figure-caption">Learning curves aggregated over multiple random seeds, highlighting sample efficiency and stability differences across algorithms.</div>
+      </div>
+      <div class="figure-block">
+        <img src="assets/baseline_policy_family_gap.png" alt="Policy Family Gap">
+        <div class="figure-caption">Scenario-normalized gap between the strongest on-policy and off-policy baselines, revealing task-dependent algorithmic strengths.</div>
+      </div>
+    </div>
+
+    <div class="section-header" style="margin-top: 60px;">
+      <h2>Agent Trajectory Heatmaps</h2>
+      <p>Visualizing the spatial coordination and division of labor between agents.</p>
+    </div>
+    
+    <div class="grid-2">
+      <div class="video-wrapper">
+        <video autoplay loop muted playsinline width="100%">
+          <source src="assets/ammo_carrier_IPPO_topdown_heatmap_best_ep03_1600x1200.mp4" type="video/mp4">
+        </video>
+        <div class="figure-caption" style="padding: 12px; text-align: center; margin-top: 0;">IPPO Trajectory Heatmap</div>
+      </div>
+      <div class="video-wrapper">
+        <video autoplay loop muted playsinline width="100%">
+          <source src="assets/ammo_carrier_HAPPO_topdown_heatmap_best_ep03_1600x1200.mp4" type="video/mp4">
+        </video>
+        <div class="figure-caption" style="padding: 12px; text-align: center; margin-top: 0;">HAPPO Trajectory Heatmap</div>
+      </div>
+    </div>
+
+    <div class="abstract-box" style="margin-top: 32px; padding: 32px; font-size: 0.95rem;">
+      <h3 style="margin-bottom: 16px; font-size: 1.1rem; color: var(--fg);">Behavioral Analysis: Ammo Carrier</h3>
+      <p style="margin-bottom: 12px; color: var(--muted);">
+        <strong style="color: var(--fg);">Objective:</strong> <em>Ammo Carrier</em> is a fixed-role asymmetric defense task. One immobilized defender must hold the hub against enemies, while a mobile runner sustains a depot-to-hub resupply loop. The challenge lies in learning a stable, long-horizon logistics routine with delayed, role-specific payoffs.
+      </p>
+      <p style="margin-bottom: 12px; color: var(--muted);">
+        <strong style="color: var(--fg);">IPPO (Left):</strong> A decentralized update allows the runner to independently optimize its loop without cross-agent interference. As seen above, IPPO concentrates movement along a recurring depot-to-hub corridor, successfully learning the required role-specialized logistics behavior.
+      </p>
+      <p style="color: var(--muted);">
+        <strong style="color: var(--fg);">HAPPO (Right):</strong> Centralized training creates counterproductive coordination pressure. The runner's gradient updates are influenced by the defender's value signal, causing it to abandon the logistics routine to move toward the defender or visit depots irregularly. This leads to episodic ammo starvation and significantly lower survival times.
+      </p>
+    </div>
+  </section>
+
+  <section id="citation">
+    <div class="section-header">
+      <h2>Citation</h2>
+    </div>
+    <pre><code>@inproceedings{
+nguyen2026comrad,
+title={{COMRAD}: A Benchmark for Embodied Cooperative Multi-Agent Reinforcement Learning},
+author={Khoi H.B. Nguyen and Dimitar Zhivkov Zhekov and Tristan Tomilin},
+booktitle={New Frontiers in Game-Theoretic Learning - NExT-Game},
+year={2026},
+url={https://openreview.net/forum?id=bXau6dlyV4}
+}</code></pre>
+  </section>
+
+</main>
+
+<footer style="text-align: center; padding: 40px 0; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--border);">
+  <div class="container">
+    &copy; 2026 Khoi H.B. Nguyen et al.
+  </div>
+</footer>
+
+<script>
+  function fitTables() {
+    document.querySelectorAll('.table-scale-wrapper').forEach(wrapper => {
+      const inner = wrapper.querySelector('.table-inner');
+      const table = inner.querySelector('table');
+      
+      inner.style.transform = 'none';
+      table.style.width = 'max-content';
+      wrapper.style.height = 'auto';
+      
+      const containerWidth = wrapper.clientWidth;
+      const tableWidth = table.offsetWidth;
+      
+      if (tableWidth > containerWidth) {
+        const scale = containerWidth / tableWidth;
+        inner.style.transform = `scale(${scale})`;
+        wrapper.style.height = `${inner.offsetHeight * scale}px`;
+      } else {
+        table.style.width = '100%';
+        wrapper.style.height = 'auto';
+      }
+    });
+  }
+  window.addEventListener('resize', fitTables);
+  document.addEventListener('DOMContentLoaded', fitTables);
+  fitTables();
+</script>
+</body>
+</html>
