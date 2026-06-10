@@ -113,6 +113,12 @@ nav {
   opacity: 0;
   animation: mosaicFadeIn 1.2s var(--ease-out-quart) 0.3s forwards;
 }
+.hero-mosaic picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 .hero-mosaic img {
   width: 100%;
   height: 100%;
@@ -415,8 +421,8 @@ section:last-of-type { border-bottom: none; }
   z-index: 1;
 }
 .triad-circle {
-  width: 180px;
-  height: 180px;
+  width: 135px;
+  height: 135px;
   border-radius: 50%;
   background: var(--surface);
   border: 1.5px solid var(--border2);
@@ -466,7 +472,7 @@ section:last-of-type { border-bottom: none; }
   font-size: 0.9rem;
   color: var(--muted);
   line-height: 1.6;
-  max-width: 200px;
+  max-width: 230px;
 }
 
 /* connector SVG wrapper spans the full triad */
@@ -780,18 +786,18 @@ footer {
 <section class="hero">
   <!-- Mosaic background of scenario screenshots -->
   <div class="hero-mosaic" aria-hidden="true">
-    <img src="assets/1.png"  alt="">
-    <img src="assets/2.png"  alt="">
-    <img src="assets/3.png"  alt="">
-    <img src="assets/4.png"  alt="">
-    <img src="assets/5.png"  alt="">
-    <img src="assets/6.png"  alt="">
-    <img src="assets/7.png"  alt="">
-    <img src="assets/8.png"  alt="">
-    <img src="assets/9a.png"  alt="">
-    <img src="assets/10.png" alt="">
-    <img src="assets/11.png" alt="">
-    <img src="assets/12.png" alt="">
+    <picture><source srcset="assets/1.webp" type="image/webp"><img src="assets/1.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/2.webp" type="image/webp"><img src="assets/2.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/3.webp" type="image/webp"><img src="assets/3.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/4.webp" type="image/webp"><img src="assets/4.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/5.webp" type="image/webp"><img src="assets/5.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/6.webp" type="image/webp"><img src="assets/6.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/7.webp" type="image/webp"><img src="assets/7.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/8.webp" type="image/webp"><img src="assets/8.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/9a.webp" type="image/webp"><img src="assets/9a.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/10.webp" type="image/webp"><img src="assets/10.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/11.webp" type="image/webp"><img src="assets/11.png" alt="" loading="lazy"></picture>
+    <picture><source srcset="assets/12.webp" type="image/webp"><img src="assets/12.png" alt="" loading="lazy"></picture>
   </div>
 
   <!-- Scrolling Doom sprite belt at bottom -->
