@@ -885,10 +885,6 @@ footer {
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         Code
       </a>
-      <a href="#scenarios" class="btn btn-secondary">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-        Explore Scenarios
-      </a>
     </div>
   </div>
 </section>
@@ -1029,7 +1025,7 @@ footer {
     <div class="section-header reveal">
       <div class="section-eyebrow">Environments</div>
       <h2>13 Cooperative Scenarios</h2>
-      <p>Agents coordinate solely from their local 3D first-person visual observations — no shared state, no explicit communication.</p>
+      <p>Agents coordinate solely from their local 3D first-person visual observations: no shared state, no explicit communication.</p>
     </div>
 
     <div class="figure-block reveal" style="margin-bottom: 52px;">
@@ -1135,7 +1131,7 @@ footer {
         </div>
         <div class="card-body">
           <div class="card-title">Dumb Enemies</div>
-          <div class="card-desc">Enemies flee solo agents but slow near groups — cooperative pursuit.</div>
+          <div class="card-desc">Enemies flee solo agents but slow near groups: cooperative pursuit.</div>
         </div>
       </div>
       <div class="card reveal reveal-delay-3">
@@ -1208,7 +1204,7 @@ footer {
             To make spatial memorization as difficult as possible, DoomGen avoids traditional orthogonal, grid-based room layouts. It constructs maps starting from a <strong style="color: var(--fg);">relaxed Voronoi tessellation</strong>, grouping irregular cells into semantically defined areas before translating the graph into valid Doom geometry.
           </p>
           <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
-            This geometric irregularity broadens the distribution of boundary shapes, sightlines, and local visual cues — exposing algorithms to a distribution of spatial configurations rather than a single memorizable map.
+            This geometric irregularity broadens the distribution of boundary shapes, sightlines, and local visual cues, exposing algorithms to a distribution of spatial configurations rather than a single memorizable map.
           </p>
         </div>
       </div>
@@ -1325,7 +1321,7 @@ footer {
         <strong>IPPO (Left):</strong> Decentralized updates allow the runner to independently optimize its loop without cross-agent interference. IPPO concentrates movement along a recurring depot-to-hub corridor, successfully learning the required role-specialized logistics behavior.
       </p>
       <p>
-        <strong>HAPPO (Right):</strong> Centralized training creates counterproductive coordination pressure. The runner's gradient updates are influenced by the defender's value signal, causing it to abandon the logistics routine — leading to episodic ammo starvation and significantly lower survival times.
+        <strong>HAPPO (Right):</strong> Centralized training creates counterproductive coordination pressure. The runner's gradient updates are influenced by the defender's value signal, causing it to abandon the logistics routine. This lead to episodic ammo starvation and significantly lower survival times.
       </p>
     </div>
   </section>
