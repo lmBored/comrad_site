@@ -505,6 +505,7 @@ section:last-of-type { border-bottom: none; }
 .mobile-divider { display: none; }
 @media (max-width: 720px) {
   .grid-2 { grid-template-columns: 1fr; }
+  .fig-shrink { width: 100% !important; }
   .mobile-divider {
     display: block;
     border: none;
@@ -612,7 +613,7 @@ section:last-of-type { border-bottom: none; }
 
 /* ─── TABLE ─── */
 .table-wrap {
-  background: var(--surface);
+  background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 12px;
   overflow: hidden;
@@ -1217,8 +1218,8 @@ footer {
           </p>
         </div>
         <div class="figure-block" style="margin-bottom: 0;">
-          <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants" style="width: 60%; display: block;">
-          <div class="figure-caption" style="width: 60%; display: block;">Four <em>Armory Siege</em> layouts generated from the same scenario template under different seeds.</div>
+          <img class="fig-shrink" src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants" style="width: 60%; display: block;">
+          <div class="figure-caption fig-shrink" style="width: 60%; display: block;">Four <em>Armory Siege</em> layouts generated from the same scenario template under different seeds.</div>
         </div>
       </div>
     </div>
