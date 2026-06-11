@@ -502,8 +502,16 @@ section:last-of-type { border-bottom: none; }
 @media (max-width: 960px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
+.mobile-divider { display: none; }
 @media (max-width: 720px) {
   .grid-2 { grid-template-columns: 1fr; }
+  .mobile-divider {
+    display: block;
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 45px 0;
+  }
 }
 @media (max-width: 520px) {
   .grid-4 { grid-template-columns: 1fr 1fr; }
@@ -1236,6 +1244,7 @@ footer {
           </p>
         </div>
       </div>
+      <hr class="mobile-divider">
       <div class="sub-section-desc" style="margin-bottom: 28px;">
         To evaluate this curriculum design, we compare six protocols on the <em>Platform Chain</em> task pool:
         <strong style="color: var(--fg);">Direct Training</strong> (static sampling of the hardest target instance),
