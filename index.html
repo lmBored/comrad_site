@@ -609,7 +609,7 @@ section:last-of-type { border-bottom: none; }
   margin-bottom: 28px;
 }
 .table-scroll { overflow-x: auto; }
-.table-scale-wrapper { overflow: hidden; }
+.table-scale-wrapper { overflow: hidden; text-align: center; }
 .table-inner { transform-origin: top left; }
 
 table {
@@ -1266,7 +1266,7 @@ footer {
     </div>
 
     <div class="table-wrap reveal">
-      <div class="table-scale-wrapper" style="overflow: hidden;">
+      <div class="table-scale-wrapper">
         <div class="table-inner" style="transform-origin: top left;">
           <table>
             <thead>
@@ -1396,41 +1396,33 @@ footer {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ── Table auto-scale ── */
-(function fitTables() {
+function fitTables() {
   document.querySelectorAll('.table-scale-wrapper').forEach(wrapper => {
     const inner = wrapper.querySelector('.table-inner');
     const table = inner.querySelector('table');
     inner.style.transform = 'none';
+    inner.style.width = '';
     table.style.width = 'max-content';
     wrapper.style.height = 'auto';
     const cw = wrapper.clientWidth;
     const tw = table.offsetWidth;
-    if (tw > cw) {
-      const scale = cw / tw;
+    const scale = Math.min(cw / tw, 1);
+    if (scale < 1) {
+      inner.style.transformOrigin = 'top left';
       inner.style.transform = `scale(${scale})`;
       wrapper.style.height = `${inner.offsetHeight * scale}px`;
     } else {
       table.style.width = '100%';
     }
   });
-}());
+}
+fitTables();
+document.fonts.ready.then(fitTables);
+setTimeout(fitTables, 800);
+let resizeTimer;
 window.addEventListener('resize', () => {
-  document.querySelectorAll('.table-scale-wrapper').forEach(wrapper => {
-    const inner = wrapper.querySelector('.table-inner');
-    const table = inner.querySelector('table');
-    inner.style.transform = 'none';
-    table.style.width = 'max-content';
-    wrapper.style.height = 'auto';
-    const cw = wrapper.clientWidth;
-    const tw = table.offsetWidth;
-    if (tw > cw) {
-      const scale = cw / tw;
-      inner.style.transform = `scale(${scale})`;
-      wrapper.style.height = `${inner.offsetHeight * scale}px`;
-    } else {
-      table.style.width = '100%';
-    }
-  });
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(fitTables, 80);
 });
 </script>
 </body>
