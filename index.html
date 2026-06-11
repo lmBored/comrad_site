@@ -1199,18 +1199,18 @@ footer {
     <!-- DoomGen -->
     <div class="sub-section reveal">
       <div class="sub-section-title">DoomGen: Procedural Map Generation</div>
-      <div class="grid-2">
-        <div class="figure-block" style="margin-bottom: 0;">
-          <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants">
-          <div class="figure-caption">Four <em>Armory Siege</em> layouts generated from the same scenario template under different seeds. DoomGen preserves task semantics while varying geometry, corridors, and sightlines.</div>
-        </div>
+      <div class="grid-2" >
         <div>
           <p style="color: var(--muted); margin-bottom: 16px; font-size: 0.95rem; line-height: 1.7;">
             To make spatial memorization as difficult as possible, DoomGen avoids traditional orthogonal, grid-based room layouts. It constructs maps starting from a <strong style="color: var(--fg);">relaxed Voronoi tessellation</strong>, grouping irregular cells into semantically defined areas before translating the graph into valid Doom geometry.
           </p>
           <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
-            This geometric irregularity broadens the distribution of boundary shapes, sightlines, and local visual cues, exposing algorithms to a distribution of spatial configurations rather than a single memorizable map.
+            This geometric irregularity broadens the distribution of boundary shapes, geometries, sightlines, and local visual cues, exposing algorithms to a distribution of spatial configurations rather than a single memorizable map, while still preserving task semantics.
           </p>
+        </div>
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/armory_seige_variants.png" alt="DoomGen Example - Armory Siege Variants" style="width: 60%; display: block;">
+          <div class="figure-caption" style="width: 60%; display: block;">Four <em>Armory Siege</em> layouts generated from the same scenario template under different seeds.</div>
         </div>
       </div>
     </div>
@@ -1219,7 +1219,31 @@ footer {
     <div class="sub-section reveal" style="margin-bottom: 0;">
       <div class="sub-section-title">Automated Curriculum Learning</div>
       <div class="sub-section-desc">
-        COMRAD exposes two orthogonal difficulty axes: task-mechanical difficulty (enemy count, time limits, hazard intensity) and spatial difficulty (DoomGen layout complexity). This factorization makes experimental conclusions sharper and supports curriculum, transfer, and generalization studies.
+        COMRAD factorizes per-scenario difficulty into two independent, orthogonal difficulty axes: task-mechanical difficulty and spatial difficulty.
+      </div>
+      <div class="grid-2" style="gap: 32px; margin-bottom: 36px;">
+        <div class="figure-block" style="margin-bottom: 0;">
+          <img src="assets/difficulty_axes.png" alt="Two orthogonal difficulty axes: task-mechanical and spatial difficulty" style="padding: 0.75em;">
+          <div class="figure-caption">The two difficulty axes factorized in COMRAD: task-mechanical vs. spatial complexity.</div>
+        </div>
+        <div>
+          <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 16px;">
+            <strong style="color: var(--fg);">Task-mechanical difficulty</strong> controls <strong>scenario parameters (enemy count, time limits, hazard intensity)</strong> that shape the coordination challenge within a fixed map topology.
+            <strong style="color: var(--fg);">Spatial difficulty</strong> controls <strong>layout complexity</strong> produced by DoomGen, from compact single-room arenas to sprawling multi-wing labyrinths.
+          </p>
+          <p style="color: var(--muted); font-size: 0.95rem; line-height: 1.7;">
+            Scaling one axis while holding the other fixed isolates whether a method fails from task demands or spatial generalization, allowing sharper experimental conclusions across curriculum, transfer, and generalization studies.
+          </p>
+        </div>
+      </div>
+      <div class="sub-section-desc" style="margin-bottom: 28px;">
+        To evaluate this curriculum design, we compare six protocols on the <em>Platform Chain</em> task pool:
+        <strong style="color: var(--fg);">Direct Training</strong> (static sampling of the hardest target instance),
+        <strong style="color: var(--fg);">Uniform</strong> (all instances sampled equally, isolating instance diversity without adaptive selection),
+        <strong style="color: var(--fg);">Sequential</strong> (strict ordering by difficulty, advancing on rolling-mean success),
+        <strong style="color: var(--fg);">Learning Progress (LP)</strong> (prioritizes instances with the highest temporal disagreement),
+        <strong style="color: var(--fg);">OMNI</strong> (frontier-ordering graph mask that suppresses mastered or unreachable instances), and
+        <strong style="color: var(--fg);">PLR (Prioritized Level Replay)</strong> (scores instances by learning potential, blending value error with staleness):
       </div>
       <div class="grid-2" style="align-items: start; gap: 20px;">
         <div class="figure-block" style="margin-bottom: 0;">
