@@ -726,6 +726,17 @@ footer {
   border-top: 1px solid var(--border);
 }
 
+.acknowledgements {
+  margin-bottom: 24px;
+  line-height: 1.7;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--muted);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ─── RESPONSIVE ─── */
 @media (max-width: 768px) {
   .abstract-box { padding: 28px 24px; }
@@ -1350,7 +1361,10 @@ footer {
 </main>
 
 <footer>
-  <div class="container">
+  <div class="container" style="max-width: 720px;">
+    <p class="acknowledgements">
+      We thank <em>Lou-corto Buring</em> and <em>Yue Peng</em> for helping brainstorm the initial ideas for 2 of the scenarios; <em>Andrei Moise</em> for encouragement; and the <em>TU/e Supercomputing Center</em> for providing the infrastructure to run the experiments.
+    </p>
     &copy; <span id="year"></span> Khoi H.B. Nguyen, Dimitar Zhivkov Zhekov, Tristan Tomilin
   </div>
 </footer>
