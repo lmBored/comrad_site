@@ -51,7 +51,6 @@ h1, h2, h3, h4 {
 }
 
 a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
 
 .container {
   max-width: 1080px;
@@ -414,10 +413,7 @@ section:last-of-type { border-bottom: none; }
   gap: 10px;
   transition: border-color 0.25s, background 0.25s, transform 0.25s, box-shadow 0.25s;
   cursor: default;
-}
-.triad-node:hover .triad-circle {
   border-color: var(--accent);
-  transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(199,80,0,0.10);
 }
 .triad-sprite {
@@ -427,10 +423,6 @@ section:last-of-type { border-bottom: none; }
   filter: grayscale(60%) brightness(0.85);
   opacity: 0.65;
   transition: filter 0.25s, opacity 0.25s;
-}
-.triad-node:hover .triad-sprite {
-  filter: none;
-  opacity: 1;
 }
 .triad-index {
   font-family: var(--font-mono);
@@ -504,11 +496,6 @@ section:last-of-type { border-bottom: none; }
   transition: transform 0.2s var(--ease-out-quart), border-color 0.2s, box-shadow 0.2s;
   position: relative;
 }
-.card:hover {
-  transform: translateY(-3px);
-  border-color: var(--border2);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
 .card-img-wrap {
   position: relative;
   width: 100%;
@@ -522,9 +509,6 @@ section:last-of-type { border-bottom: none; }
   object-fit: cover;
   display: block;
   transition: transform 0.4s var(--ease-out-quart), filter 0.4s;
-}
-.card:hover .card-img-wrap img {
-  transform: scale(1.04);
 }
 .diff-badge {
   position: absolute;
@@ -696,21 +680,6 @@ pre {
 }
 .analysis-box p:last-child { margin-bottom: 0; }
 .analysis-box strong { color: var(--fg); }
-
-/* ─── SCROLL REVEAL ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.55s var(--ease-out-quart), transform 0.55s var(--ease-out-quart);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: none;
-}
-.reveal-delay-1 { transition-delay: 0.08s; }
-.reveal-delay-2 { transition-delay: 0.16s; }
-.reveal-delay-3 { transition-delay: 0.24s; }
-.reveal-delay-4 { transition-delay: 0.32s; }
 
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -885,19 +854,19 @@ footer {
 <!-- ═══ STAT STRIP ═══ -->
 <div class="stat-strip">
   <div class="stat-strip-inner">
-    <div class="stat-item reveal">
+    <div class="stat-item">
       <div class="stat-num"><span class="accent">13</span></div>
       <div class="stat-label">Cooperative Scenarios</div>
     </div>
-    <div class="stat-item reveal reveal-delay-1">
+    <div class="stat-item-delay-1">
       <div class="stat-num"><span class="accent">7</span></div>
       <div class="stat-label">CTDE Baselines</div>
     </div>
-    <div class="stat-item reveal reveal-delay-2">
+    <div class="stat-item-delay-2">
       <div class="stat-num">~<span class="accent">25K</span></div>
       <div class="stat-label">Frames / Second on 1 GPU</div>
     </div>
-    <div class="stat-item reveal reveal-delay-4">
+    <div class="stat-item-delay-4">
       <div class="stat-num"><span class="accent">2–8</span></div>
       <div class="stat-label">Agents per Scenario</div>
     </div>
@@ -908,11 +877,11 @@ footer {
 
   <!-- ═══ ABSTRACT ═══ -->
   <section id="abstract">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">Overview</div>
       <h2>Abstract</h2>
     </div>
-    <div class="abstract-box reveal">
+    <div class="abstract-box">
       Benchmarks are central to the development and evaluation of multi-agent reinforcement learning (MARL) algorithms. As the cooperative MARL community has grown, two categories of evaluation environments have proven indispensable: low-dimensional feature-vector benchmarks that isolate algorithmic behavior in compact state spaces, and two-dimensional pixel-based benchmarks that rely on overhead visual observations. However, to bridge the gap to real-world embodied settings such as robotics and autonomous navigation, algorithms must handle <strong>high-dimensional, 3D egocentric visual complexity</strong>. While various 3D environments have been explored for vision-based RL, no existing platform simultaneously provides a standardized, purely cooperative multi-agent benchmark with 3D first-person observations and high-throughput simulation.
       <br>
       <br>
@@ -925,12 +894,12 @@ footer {
 
   <!-- ═══ CONTRIBUTIONS ═══ -->
   <section id="contributions">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">Contributions</div>
       <h2>What We Introduce</h2>
     </div>
 
-    <div class="contrib-triad reveal">
+    <div class="contrib-triad">
       <!-- top two nodes -->
       <div class="triad-top" id="triad-top">
         <div class="triad-node">
@@ -1015,19 +984,19 @@ footer {
 
   <!-- ═══ SCENARIOS ═══ -->
   <section id="scenarios">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">Environments</div>
       <h2>13 Cooperative Scenarios</h2>
       <p>Agents coordinate solely from their local 3D first-person visual observations: no shared state, no explicit communication.</p>
     </div>
 
-    <div class="figure-block reveal" style="margin-bottom: 52px;">
+    <div class="figure-block" style="margin-bottom: 52px;">
       <img src="assets/categories.png" alt="Scenario taxonomy across four cooperation dimensions">
       <div class="figure-caption">Cooperation properties of all 13 COMRAD scenarios across four analytical dimensions, confirming diversity across coordination challenge types.</div>
     </div>
 
     <div class="grid-4">
-      <div class="card reveal reveal-delay-1">
+      <div class="card-delay-1">
         <div class="card-img-wrap">
           <img src="assets/1.png" alt="Stag Hunt Arena">
           <span class="diff-badge diff-1">Easy · D1</span>
@@ -1037,7 +1006,7 @@ footer {
           <div class="card-desc">Resolve the hare-vs-stag dilemma under partial observability.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-2">
+      <div class="card-delay-2">
         <div class="card-img-wrap">
           <img src="assets/2.png" alt="Rhythm Sync">
           <span class="diff-badge diff-3">Medium · D3</span>
@@ -1047,7 +1016,7 @@ footer {
           <div class="card-desc">Synchronize temporal switches without communication.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-3">
+      <div class="card-delay-3">
         <div class="card-img-wrap">
           <img src="assets/3.png" alt="Foraging Commons">
           <span class="diff-badge diff-3">Medium · D3</span>
@@ -1057,7 +1026,7 @@ footer {
           <div class="card-desc">Balance individual harvesting against replenishing a shared pool.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-4">
+      <div class="card-delay-4">
         <div class="card-img-wrap">
           <img src="assets/4.png" alt="Co-op Puzzle">
           <span class="diff-badge diff-3">Medium · D3</span>
@@ -1067,7 +1036,7 @@ footer {
           <div class="card-desc">Sequentially unlock gates in a strict turn-based progression.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-1">
+      <div class="card-delay-1">
         <div class="card-img-wrap">
           <img src="assets/5.png" alt="Platform Chain">
           <span class="diff-badge diff-4">Hard · D4</span>
@@ -1077,7 +1046,7 @@ footer {
           <div class="card-desc">A physical tether constrains agents to maintain proximity.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-2">
+      <div class="card-delay-2">
         <div class="card-img-wrap">
           <img src="assets/6.png" alt="Armory Siege">
           <span class="diff-badge diff-4">Hard · D4</span>
@@ -1087,7 +1056,7 @@ footer {
           <div class="card-desc">Defend a core while rotating members to collect distant resources.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-3">
+      <div class="card-delay-3">
         <div class="card-img-wrap">
           <img src="assets/7.png" alt="Coop Health Gathering">
           <span class="diff-badge diff-4">Hard · D4</span>
@@ -1097,7 +1066,7 @@ footer {
           <div class="card-desc">Navigate a decaying health field together to maximize overlap.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-4">
+      <div class="card-delay-4">
         <div class="card-img-wrap">
           <img src="assets/8.png" alt="Lava Pit">
           <span class="diff-badge diff-5">Difficult · D5</span>
@@ -1107,7 +1076,7 @@ footer {
           <div class="card-desc">Alternate holding pressure plates to support crossings over lava.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-1">
+      <div class="card-delay-1">
         <div class="card-img-wrap">
           <img src="assets/9a.png" alt="Smart Enemies">
           <span class="diff-badge diff-5">Difficult · D5</span>
@@ -1117,7 +1086,7 @@ footer {
           <div class="card-desc">Enemies accelerate under concentrated fire, forcing dispersion.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-2">
+      <div class="card-delay-2">
         <div class="card-img-wrap">
           <img src="assets/9b.png" alt="Dumb Enemies">
           <span class="diff-badge diff-5">Difficult · D5</span>
@@ -1127,7 +1096,7 @@ footer {
           <div class="card-desc">Enemies flee solo agents but slow near groups: cooperative pursuit.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-3">
+      <div class="card-delay-3">
         <div class="card-img-wrap">
           <img src="assets/11.png" alt="Ammo Carrier">
           <span class="diff-badge diff-6">Severe · D6</span>
@@ -1137,7 +1106,7 @@ footer {
           <div class="card-desc">A mobile carrier resupplies a stationary defender continuously.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-4">
+      <div class="card-delay-4">
         <div class="card-img-wrap">
           <img src="assets/10.png" alt="Stealth Labyrinth">
           <span class="diff-badge diff-7">Very Difficult · D7</span>
@@ -1147,7 +1116,7 @@ footer {
           <div class="card-desc">Torch-gunner pair survives under extreme asymmetric observability.</div>
         </div>
       </div>
-      <div class="card reveal reveal-delay-1">
+      <div class="card-delay-1">
         <div class="card-img-wrap">
           <img src="assets/12.png" alt="Lava Maze">
           <span class="diff-badge diff-7">Very Difficult · D7</span>
@@ -1162,14 +1131,14 @@ footer {
 
   <!-- ═══ METHODOLOGY ═══ -->
   <section id="methodology">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">System Design</div>
       <h2>Methodology</h2>
       <p>High-throughput infrastructure, procedural generation, and curriculum learning form the backbone of COMRAD.</p>
     </div>
 
     <!-- Training Architecture -->
-    <div class="sub-section reveal">
+    <div class="sub-section">
       <div class="sub-section-title">Training Architecture</div>
       <div class="sub-section-desc">
         COMRAD integrates with Sample Factory, enabling highly parallelized asynchronous RL that achieves ~25K FPS during training on a single GPU. Rollout workers run ViZDoom instances in parallel on CPU while policy workers and the learner batch inference and optimization on GPU.
@@ -1187,7 +1156,7 @@ footer {
     </div>
 
     <!-- DoomGen -->
-    <div class="sub-section reveal">
+    <div class="sub-section">
       <div class="sub-section-title">DoomGen: Procedural Map Generation</div>
       <div class="grid-2" >
         <div>
@@ -1206,7 +1175,7 @@ footer {
     </div>
 
     <!-- Curriculum -->
-    <div class="sub-section reveal" style="margin-bottom: 0;">
+    <div class="sub-section" style="margin-bottom: 0;">
       <div class="sub-section-title">Automated Curriculum Learning</div>
       <div class="sub-section-desc">
         COMRAD factorizes per-scenario difficulty into two independent, orthogonal difficulty axes: task-mechanical difficulty and spatial difficulty.
@@ -1251,13 +1220,13 @@ footer {
 
   <!-- ═══ RESULTS ═══ -->
   <section id="results">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">Experiments</div>
       <h2>Results</h2>
       <p>Performance of 7 established CTDE baselines across all 13 COMRAD scenarios under a 100M-step training budget.</p>
     </div>
 
-    <div class="table-wrap reveal">
+    <div class="table-wrap">
       <div class="table-scale-wrapper">
         <div class="table-inner" style="transform-origin: top left;">
           <table>
@@ -1296,7 +1265,7 @@ footer {
       <div class="table-caption">Full baseline matrix at the 100M-step frontier. Entries report mean ± 95% CI over five independent runs (seeds 42, 68, 81, 97, 154). Bold orange = best per scenario. Ceiling = theoretical maximum under optimal play.</div>
     </div>
 
-    <div class="grid-2 reveal" style="margin-top: 36px;">
+    <div class="grid-2" style="margin-top: 36px;">
       <div class="figure-block">
         <img src="assets/baseline_learning_curves.png" alt="Learning Curves">
         <div class="figure-caption">Learning curves aggregated over multiple seeds, highlighting sample efficiency and stability differences across algorithm families.</div>
@@ -1308,13 +1277,13 @@ footer {
     </div>
 
     <!-- Heatmaps -->
-    <div class="section-header reveal" style="margin-top: 72px; margin-bottom: 32px;">
+    <div class="section-header" style="margin-top: 72px; margin-bottom: 32px;">
       <div class="section-eyebrow">Behavioral Analysis</div>
       <h2>When Centralized Training Hurts</h2>
       <p>Visualizing spatial coordination and division of labor between agents in the <em>Ammo Carrier</em> scenario.</p>
     </div>
 
-    <div class="grid-2 reveal">
+    <div class="grid-2">
       <div class="video-wrapper">
         <video autoplay loop muted playsinline>
           <source src="assets/ammo_carrier_IPPO_topdown_heatmap_best_ep03_1600x1200.mp4" type="video/mp4">
@@ -1329,7 +1298,7 @@ footer {
       </div>
     </div>
 
-    <div class="analysis-box reveal">
+    <div class="analysis-box">
       <h3>Why IPPO Outperforms HAPPO on Ammo Carrier</h3>
       <p>
         <strong>Objective:</strong> <em>Ammo Carrier</em> is a fixed-role asymmetric defense task. One immobilized defender holds the hub against enemies, while a mobile runner maintains a depot-to-hub resupply loop. The challenge lies in learning a stable, long-horizon logistics routine with delayed, role-specific payoffs.
@@ -1345,11 +1314,11 @@ footer {
 
   <!-- ═══ CITATION ═══ -->
   <section id="citation">
-    <div class="section-header reveal">
+    <div class="section-header">
       <div class="section-eyebrow">Reference</div>
       <h2>Citation</h2>
     </div>
-    <pre class="reveal"><code>@inproceedings{nguyen2026comrad,
+    <pre><code>@inproceedings{nguyen2026comrad,
   title={{COMRAD}: A Benchmark for Embodied Cooperative Multi-Agent Reinforcement Learning},
   author={Khoi H.B. Nguyen and Dimitar Zhivkov Zhekov and Tristan Tomilin},
   booktitle={New Frontiers in Game-Theoretic Learning - NExT-Game},
@@ -1370,23 +1339,6 @@ footer {
 </footer>
 
 <script>
-/* ── Scroll reveal ── */
-(function() {
-  const els = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  els.forEach(el => io.observe(el));
-})();
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
