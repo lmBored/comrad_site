@@ -311,15 +311,6 @@ section {
 }
 section:last-of-type { border-bottom: none; }
 
-.section-eyebrow {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin-bottom: 12px;
-  font-family: var(--font-mono);
-}
 .section-header {
   margin-bottom: 52px;
 }
@@ -858,15 +849,15 @@ footer {
       <div class="stat-num"><span class="accent">13</span></div>
       <div class="stat-label">Cooperative Scenarios</div>
     </div>
-    <div class="stat-item-delay-1">
+    <div class="stat-item">
       <div class="stat-num"><span class="accent">7</span></div>
       <div class="stat-label">CTDE Baselines</div>
     </div>
-    <div class="stat-item-delay-2">
+    <div class="stat-item">
       <div class="stat-num">~<span class="accent">25K</span></div>
       <div class="stat-label">Frames / Second on 1 GPU</div>
     </div>
-    <div class="stat-item-delay-4">
+    <div class="stat-item">
       <div class="stat-num"><span class="accent">2–8</span></div>
       <div class="stat-label">Agents per Scenario</div>
     </div>
@@ -878,7 +869,6 @@ footer {
   <!-- ═══ ABSTRACT ═══ -->
   <section id="abstract">
     <div class="section-header">
-      <div class="section-eyebrow">Overview</div>
       <h2>Abstract</h2>
     </div>
     <div class="abstract-box">
@@ -895,7 +885,6 @@ footer {
   <!-- ═══ CONTRIBUTIONS ═══ -->
   <section id="contributions">
     <div class="section-header">
-      <div class="section-eyebrow">Contributions</div>
       <h2>What We Introduce</h2>
     </div>
 
@@ -985,7 +974,6 @@ footer {
   <!-- ═══ SCENARIOS ═══ -->
   <section id="scenarios">
     <div class="section-header">
-      <div class="section-eyebrow">Environments</div>
       <h2>13 Cooperative Scenarios</h2>
       <p>Agents coordinate solely from their local 3D first-person visual observations: no shared state, no explicit communication.</p>
     </div>
@@ -1132,7 +1120,6 @@ footer {
   <!-- ═══ METHODOLOGY ═══ -->
   <section id="methodology">
     <div class="section-header">
-      <div class="section-eyebrow">System Design</div>
       <h2>Methodology</h2>
       <p>High-throughput infrastructure, procedural generation, and curriculum learning form the backbone of COMRAD.</p>
     </div>
@@ -1221,7 +1208,6 @@ footer {
   <!-- ═══ RESULTS ═══ -->
   <section id="results">
     <div class="section-header">
-      <div class="section-eyebrow">Experiments</div>
       <h2>Results</h2>
       <p>Performance of 7 established CTDE baselines across all 13 COMRAD scenarios under a 100M-step training budget.</p>
     </div>
@@ -1278,7 +1264,6 @@ footer {
 
     <!-- Heatmaps -->
     <div class="section-header" style="margin-top: 72px; margin-bottom: 32px;">
-      <div class="section-eyebrow">Behavioral Analysis</div>
       <h2>When Centralized Training Hurts</h2>
       <p>Visualizing spatial coordination and division of labor between agents in the <em>Ammo Carrier</em> scenario.</p>
     </div>
@@ -1315,7 +1300,6 @@ footer {
   <!-- ═══ CITATION ═══ -->
   <section id="citation">
     <div class="section-header">
-      <div class="section-eyebrow">Reference</div>
       <h2>Citation</h2>
     </div>
     <pre><code>@inproceedings{nguyen2026comrad,
