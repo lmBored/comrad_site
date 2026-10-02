@@ -88,7 +88,7 @@ em { color: var(--bone); }
 /* ───────────── hero ───────────── */
 .hero { position: relative; padding-top: clamp(28px, 5vw, 64px); }
 .hero-head { position: relative; text-align: center; }
-.kicker { font-family: var(--font-hud); font-size: 1.45rem; color: var(--khaki); text-transform: uppercase; letter-spacing: .06em; margin: 0; }
+.kicker { font-family: var(--font-hud); font-size: 1.45rem; color: var(--khaki); text-transform: uppercase; letter-spacing: .06em; margin: 1rem; }
 .wordmark {
   margin: 0; font-family: var(--font-display); font-weight: 900; font-size: var(--step-4);
   line-height: .78; letter-spacing: -.01em; display: flex; justify-content: center; text-transform: uppercase;
@@ -416,6 +416,18 @@ footer .gg { display: flex; align-items: flex-end; gap: 6px; }
 footer .gg img { height: 58px; image-rendering: pixelated; }
 
 [hidden] { display: none !important; }
+
+/* difficulty: the axes figure fills its column like the grid beside it */
+.diff { align-items: stretch; }
+.diff figure { display: flex; flex-direction: column; }
+.diff figure img { width: 100%; height: auto; flex: 1 1 auto; object-fit: contain; }
+
+/* footer: the two marines say GG */
+footer .gg { flex-direction: column; align-items: center; gap: 14px; }
+footer .gg .duo { display: flex; align-items: flex-end; gap: 6px; }
+
+/* tug of war: no seam through the scenario names; bars leave room for their value */
+.tug-rows .seam { display: none; }
 
 /* option switches read as radio choices: the filled marker is the active one */
 .seg { border: 0; gap: 4px; }

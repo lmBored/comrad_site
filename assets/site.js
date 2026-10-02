@@ -275,7 +275,7 @@
       const io = on.indexOf(Math.max(...on)), ifo = off.indexOf(Math.max(...off));
       const a = norm(s, on[io]), b = norm(s, off[ifo]);
       const win = a - b > 0.005 ? "win-l" : b - a > 0.005 ? "win-r" : "";
-      const wa = (a * 100).toFixed(1) + "%", wb = (b * 100).toFixed(1) + "%";
+      const wa = (a * 85).toFixed(1) + "%", wb = (b * 85).toFixed(1) + "%"; // 15% headroom keeps the value label inside the column
       const r = el("div", { class: `tr ${win}` },
         `<div class="side l" style="--w:${wa}"><span class="b" style="width:${wa}"></span>${a > 0.12 ? `<span class="who">${ALGOS[io]}</span>` : ""}<span class="v">${a.toFixed(2)}</span></div>` +
         `<div class="lab">${s.name}</div>` +
