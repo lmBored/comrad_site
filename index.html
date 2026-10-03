@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>COMRAD Benchmark</title>
-<meta name="description" content="COMRAD: a benchmark for embodied cooperative multi-agent reinforcement learning in Doom. 13 first-person co-op scenarios, DoomGen procedural maps, 8 CTDE baselines at ~25K FPS.">
+<meta name="description" content="COMRAD: a benchmark for embodied cooperative multi-agent reinforcement learning in Doom. 13 first-person co-op scenarios, DoomGen procedural maps, 7 CTDE baselines at ~25K FPS.">
 <meta property="og:title" content="COMRAD: A Benchmark for Embodied Cooperative MARL">
-<meta property="og:description" content="13 first-person cooperative scenarios, procedural maps, and 8 CTDE baselines in Doom.">
+<meta property="og:description" content="13 first-person cooperative scenarios, procedural maps, and 7 CTDE baselines in Doom.">
 <meta property="og:image" content="assets/video/demo_poster.jpg">
 <link rel="icon" type="image/png" href="assets/sprites/playa1.png">
 <link rel="stylesheet" href="assets/site.css">
@@ -61,7 +61,7 @@
     </div>
     <div class="statusbar" role="list" aria-label="COMRAD at a glance">
       <div class="stat" role="listitem"><span class="n">13</span><span class="l">co-op scenarios</span></div>
-      <div class="stat" role="listitem"><span class="n">8</span><span class="l">CTDE baselines</span></div>
+      <div class="stat" role="listitem"><span class="n">7</span><span class="l">CTDE baselines</span></div>
       <div class="stat" role="listitem"><span class="n">25K</span><span class="l">FPS on one GPU</span></div>
       <div class="face" aria-hidden="true"><img id="face" src="assets/sprites/stfst01.png" alt=""></div>
       <div class="stat" role="listitem"><span class="n">1H</span><span class="l">per 100M steps</span></div>
@@ -115,7 +115,7 @@
     <div class="sec-head">
       <div>
         <h2 id="scen-h">13 scenarios. <em>Pick a level.</em></h2>
-        <p class="deck">Each agent sees a private 128×72 RGB camera, nothing else. Choose a scenario to see two in-game views, what it tests, and how the eight baselines scored after 100M steps on held-out maps.</p>
+        <p class="deck">Each agent sees a private 128×72 RGB camera, nothing else. Choose a scenario to see two in-game views, what it tests, and how the seven baselines scored after 100M steps on held-out maps.</p>
       </div>
       <div class="mascot" aria-hidden="true"><span class="bubble">CHOOSE WISELY</span><img src="assets/sprites/trooa1.png" alt=""></div>
     </div>
@@ -241,7 +241,7 @@
     <div class="sec-head">
       <div>
         <h2 id="res-h">Scoreboard: <em>nobody wins it all</em></h2>
-        <p class="deck">Eight baseline configurations, 100M steps, teams of two, zero-shot on held-out layouts. Mean over five seeds (42, 68, 81, 97, 154), 100 evaluation episodes each.</p>
+        <p class="deck">Seven baseline configurations, 100M steps, teams of two, zero-shot on held-out layouts. Mean over five seeds (42, 68, 81, 97, 154), 100 evaluation episodes each.</p>
       </div>
       <div class="mascot" aria-hidden="true"><span class="bubble">ALL <b>0</b>?!</span><img src="assets/sprites/heada1.png" alt=""></div>
     </div>
@@ -271,8 +271,8 @@
     </div>
 
     <figure style="margin-top:clamp(40px,6vw,72px)">
-      <a href="assets/fig/learning_curves.jpg" target="_blank" rel="noopener"><img src="assets/fig/learning_curves.jpg" alt="Per-scenario learning curves for all eight baselines" loading="lazy" style="background:#fff"></a>
-      <figcaption><b>Learning curves</b> for all eight baselines, benchmark score against environment steps up to 100M. One representative seed per algorithm. Click to open full size.</figcaption>
+      <a href="assets/fig/learning_curves.jpg" target="_blank" rel="noopener"><img src="assets/fig/learning_curves.jpg" alt="Per-scenario learning curves for all seven baselines" loading="lazy" style="background:#fff"></a>
+      <figcaption><b>Learning curves</b> for all seven baselines, benchmark score against environment steps up to 100M. One representative seed per algorithm. Click to open full size.</figcaption>
     </figure>
   </div>
 </section>
