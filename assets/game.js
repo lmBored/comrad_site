@@ -3,6 +3,11 @@
    Hares (+1) can be hunted alone. The stag (+5) is shielded unless both hunters stand within RANGE. */
 (function () {
   "use strict";
+
+  // The real WAD launcher owns this canvas on the public site. This older
+  // JavaScript remake is retained in the bundle for development/reference.
+  if (window.COMRAD_REAL_WAD_ACTIVE) return;
+
   const cv = document.getElementById("game");
   if (!cv) return;
   const ctx = cv.getContext("2d");

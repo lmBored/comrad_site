@@ -146,38 +146,32 @@
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <h2 id="play-h">Play <em>Stag Hunt Arena</em> with a bot partner</h2>
-        <p class="deck">A small browser remake of COMRAD's easiest scenario. Hares are worth a point and anyone can take them. The stag is worth five, but its shield only drops while you and your partner stand close together.</p>
+        <h2 id="play-h">Play the real <em>Stag Hunt Arena</em> WAD</h2>
+        <p class="deck">This is the actual COMRAD scenario running client-side in a WebAssembly GZDoom engine. The browser downloads the engine, the free Freedoom base game, and the 58 KB scenario WAD from this site—no Python process or streaming backend is involved.</p>
       </div>
       <div class="mascot" aria-hidden="true"><span class="bubble">STICK TOGETHER!</span><img src="assets/sprites/bossa1.png" alt=""></div>
     </div>
-    <div class="arcade" id="arcade">
-      <canvas id="game" width="640" height="200" tabindex="0" aria-label="Stag Hunt mini-game. Click to start, then use WASD or arrow keys to move and Space to shoot."></canvas>
+    <div class="arcade real-wad" id="arcade">
+      <canvas id="game" width="640" height="360" tabindex="0" aria-label="The real Stag Hunt Arena Doom WAD with one local bot partner. Click the view for mouse look, then use WASD, arrow keys, and Control to play."></canvas>
       <span class="seam" aria-hidden="true"></span>
+      <div class="doom-launch" id="doom-launch">
+        <button class="btn solid" id="doom-start" type="button">▶ Run the real WAD in this browser</button>
+        <p id="doom-status" role="status" aria-live="polite"></p>
+      </div>
     </div>
-    <div class="touchpad" id="touchpad" aria-hidden="true">
+    <div class="touchpad" id="touchpad" aria-label="Touch controls">
       <div class="grp"><button data-k="left">◀</button><button data-k="up">▲</button><button data-k="down">▼</button><button data-k="right">▶</button></div>
       <div class="grp"><button data-k="fire" style="width:96px">FIRE</button></div>
     </div>
     <div class="game-ui">
-      <div class="toggles">
-        <span class="label">Partner</span>
-        <div class="seg" role="group" aria-label="Partner behaviour">
-          <button type="button" data-partner="loyal" aria-pressed="true">Sticks with you</button>
-          <button type="button" data-partner="greedy" aria-pressed="false">Chases hares</button>
-        </div>
-        <span class="label" style="margin-left:10px">Partner cam</span>
-        <div class="seg" role="group" aria-label="Partner camera">
-          <button type="button" data-cam="on" aria-pressed="true">Shown</button>
-          <button type="button" data-cam="off" aria-pressed="false">Hidden</button>
-        </div>
-      </div>
-      <div class="keys"><kbd>W A S D</kbd> / <kbd>↑ ← ↓ →</kbd> move &nbsp; <kbd>Space</kbd> shoot &nbsp; <kbd>R</kbd> restart</div>
+      <div class="doom-controls"><button class="btn" id="doom-lock" type="button" disabled>Lock mouse</button><span class="keys" id="doom-lock-status">Start the WAD, then lock the pointer for mouse look.</span></div>
+      <div class="keys"><kbd>W A S D</kbd> move/strafe &nbsp; <kbd>← →</kbd> turn &nbsp; <kbd>Control</kbd> fire &nbsp; <kbd>Space</kbd> use &nbsp; <kbd>Esc</kbd> release mouse</div>
+      <div class="keys">The game runs locally in your tab: one human Doom player and one local Rambo bot partner. There is no second browser client or network multiplayer mode.</div>
     </div>
     <div class="game-rules">
-      <div><img src="assets/sprites/skula1.png" alt=""><span><b>Hares, +1.</b> Safe and solo. Greedy play racks these up and never learns the bigger payoff, the classic hare-versus-stag trap.</span></div>
-      <div><img src="assets/sprites/bossa1.png" alt=""><span><b>Stag, +5.</b> Shielded unless both hunters are within range of each other. Coordination has to emerge from what each of you can see.</span></div>
-      <div><img src="assets/sprites/stfst01.png" alt=""><span><b>Hide the partner cam</b> to play the way a decentralized policy acts: only your own view, no messages, no map.</span></div>
+      <div><img src="assets/sprites/bossa1.png" alt=""><span><b>Actual engine.</b> The WAD is mounted by a GZDoom-family WebAssembly port, not reimplemented as a JavaScript raycaster.</span></div>
+      <div><img src="assets/sprites/skula1.png" alt=""><span><b>Actual scenario.</b> `stag_hunt_arena.wad` is loaded together with the self-hosted Freedoom IWAD and its ACS/DECORATE content.</span></div>
+      <div><img src="assets/sprites/stfst01.png" alt=""><span><b>Static deployment.</b> The engine, WADs, bot definitions, worker, and JavaScript are all served from this `comrad_site` directory.</span></div>
     </div>
   </div>
 </section>
@@ -428,6 +422,7 @@
 </footer>
 
 <script src="assets/site.js"></script>
+<script src="assets/doom_browser.js"></script>
 <script src="assets/game.js"></script>
 </body>
 </html>

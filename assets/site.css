@@ -271,8 +271,19 @@ table.cmp { width: 100%; border-collapse: collapse; font-size: .98rem; min-width
 .arcade canvas { width: 100%; height: auto; aspect-ratio: 32 / 10; image-rendering: pixelated; cursor: crosshair; }
 .arcade.solo canvas { aspect-ratio: 16 / 10; }
 .arcade.solo .seam { display: none; }
+.arcade.real-wad canvas { aspect-ratio: 16 / 9; display: block; }
+.arcade.real-wad .seam { display: none; }
+.doom-launch { position: absolute; inset: 0; display: grid; place-content: center; gap: 10px; padding: 24px; background: rgba(0, 0, 0, .78); text-align: center; }
+.doom-launch p { max-width: 44rem; margin: 0; color: var(--khaki); font-family: var(--font-hud); font-size: 1.2rem; line-height: 1.25; }
+.doom-launch p[data-state="ok"] { color: var(--hud); }
+.doom-launch p[data-state="error"] { color: #ff9a83; }
+.arcade.real-wad.running .doom-launch { inset: auto 0 0; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 7px 12px; background: rgba(0, 0, 0, .7); pointer-events: none; }
+.arcade.real-wad.running #doom-start { display: none; }
+.arcade.real-wad.running .doom-launch p { font-size: 1rem; }
 .game-ui { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 24px; align-items: center; margin-top: 16px; }
 @media (max-width: 860px) { .game-ui { grid-template-columns: 1fr; } }
+.doom-controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.doom-controls .btn { padding: 5px 11px; }
 .toggles { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .toggles .label { margin-right: 4px; }
 .seg { display: inline-flex; border: 2px solid var(--bone); }
