@@ -98,6 +98,8 @@ def main() -> None:
                "bossa1", "bossb1", "bosse1", "bossi0", "spida1", "cposa1", "fatta1",
                "rkeya0", "bkeya0", "ykeya0", "ammoa0", "clipa0", "media0", "stima0", "soula0", "bar1a0",
                "bal1a0", "pisga0", "pisfa0", "misfa0", "puffa0", "puffb0", "tfoga0", "tfogb0", "tfogc0"]
+    sprites += [f"{actor}{frame}1" for actor in ("poss", "troo", "boss", "sarg") for frame in "bcd"]
+    sprites += ["painb1", "playd1"]
     for s in sprites:
         src = VIS / "SPRITES" / f"{s}.png"
         if src.exists():

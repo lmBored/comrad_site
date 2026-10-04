@@ -6,6 +6,53 @@
   const el = (tag, attrs = {}, html = "") => { const e = document.createElement(tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (html) e.innerHTML = html; return e; };
   const SPR = "assets/sprites/";
 
+  /* Section and footer characters use Freedoom's forward-facing movement frames. */
+  const monsterFrames = { poss: "abcd", troo: "abcd", boss: "abcd", sarg: "abcd", pain: "ab", skul: "ab", head: "a", play: "abcd" };
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  const monsters = [];
+  const monsterObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const monster = monsters.find(m => m.img === entry.target);
+      if (monster) {
+        monster.visible = entry.isIntersecting;
+        monster.img.classList.toggle("in-view", monster.visible);
+      }
+    });
+  });
+  $$(".sec-head .mascot img, footer .gg .duo img").forEach(async img => {
+    const prefix = img.getAttribute("src").split("/").pop().slice(0, 4);
+    if (!monsterFrames[prefix]) return;
+    const still = img.getAttribute("src");
+    // Two short walk cycles (1.44s), then hold the original aiming pose (2.16s).
+    const frames = img.dataset.motion === "walk-then-aim" ? "abcdabcd" + "e".repeat(9) : monsterFrames[prefix];
+    const sources = [...frames].map(frame => `${SPR}${prefix}${frame}1.png`);
+    try {
+      await img.decode();
+      // Fix the original footprint so differently sized poses never shift text.
+      img.style.width = `${parseFloat(getComputedStyle(img).height) * img.naturalWidth / img.naturalHeight}px`;
+      await Promise.all(sources.map(src => { const frame = new Image(); frame.src = src; return frame.decode(); }));
+    } catch { return; } // Keep the original image if an asset cannot load.
+    const monster = { img, sources, still, frame: -1, visible: false };
+    monsters.push(monster);
+    img.classList.add("animated-monster");
+    if (["head", "pain", "skul"].includes(prefix)) img.classList.add("floating-monster");
+    monsterObserver.observe(img);
+  });
+  let monsterTimer;
+  function updateMonsterMotion() {
+    clearInterval(monsterTimer);
+    monsters.forEach(m => { m.frame = -1; m.img.src = m.still; });
+    if (reducedMotion.matches || document.hidden) return;
+    monsterTimer = setInterval(() => {
+      monsters.forEach(m => {
+        if (m.visible) { m.frame = (m.frame + 1) % m.sources.length; m.img.src = m.sources[m.frame]; }
+      });
+    }, 180);
+  }
+  reducedMotion.addEventListener("change", updateMonsterMotion);
+  document.addEventListener("visibilitychange", updateMonsterMotion);
+  updateMonsterMotion();
+
   /* ───────── data: Table 2 of the paper (100M steps, N=2, held-out maps, 5 seeds) ───────── */
   const ALGOS = ["IPPO", "MAPPO", "HAPPO", "IDQN", "VDN", "QMIX", "QPLEX-D", "QPLEX-Q"];
   const ON = 3; // first three are on-policy

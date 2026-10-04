@@ -173,6 +173,10 @@ section.block { padding-block: clamp(64px, 9vw, 120px); border-bottom: 1px solid
 .sec-head p.deck { margin: 14px 0 0; max-width: 62ch; color: var(--khaki); font-size: var(--step-1); line-height: 1.45; }
 .sec-head .mascot { display: flex; align-items: flex-end; gap: 10px; }
 .sec-head .mascot img { height: 78px; width: auto; image-rendering: pixelated; filter: drop-shadow(3px 3px 0 rgba(0,0,0,.6)); }
+.sec-head .mascot img.animated-monster, footer .gg img.animated-monster { object-fit: contain; object-position: center bottom; flex: none; }
+.sec-head .mascot img.floating-monster { animation: monster-hover 2.4s ease-in-out infinite; animation-play-state: paused; }
+.sec-head .mascot img.floating-monster.in-view { animation-play-state: running; }
+@keyframes monster-hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 .sec-head .mascot .bubble::after { left: auto; right: -12px; bottom: 8px; top: auto; border-width: 7px 0 7px 12px; border-color: transparent transparent transparent var(--bone); margin: 0; }
 @media (max-width: 720px) { .sec-head { grid-template-columns: minmax(0, 1fr); } .sec-head .mascot { justify-self: end; } }
 .label { font-family: var(--font-hud); font-size: 1.3rem; text-transform: uppercase; color: var(--khaki); letter-spacing: .04em; line-height: 1.1; }
