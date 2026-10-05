@@ -24,6 +24,7 @@
     "freedoom2.wad",
     "stag_hunt_arena.wad",
     "bots.cfg",
+    "bot_start.cfg",
     "gzdoom.pk3",
     "brightmaps.pk3",
     "game_support.pk3",
@@ -34,7 +35,7 @@
   let worker = null;
   let started = false;
   let ready = false;
-  let botTimer = null;
+  let botRequested = false;
 
   function setStatus(message, kind) {
     status.textContent = message;
@@ -83,39 +84,16 @@
     });
   }
 
-  // GZDoom's bot command is intentionally issued after the engine has entered
-  // the map. A +addbot command in the startup arguments runs too early (before
-  // there is a game), so type the same command a player would enter in the
-  // local console. This keeps the page to one human and one local bot; no
-  // second browser client or network connection is created.
-  function consoleKey(code, key, keyCode, type, charCode) {
-    sendKey(code, type, { key, keyCode, charCode, which: keyCode });
-  }
-
-  function consoleCommand(command) {
-    if (!worker || !ready) return;
-    consoleKey("Backquote", "`", 192, "keydown");
-    consoleKey("Backquote", "`", 192, "keyup");
-    for (const character of command) {
-      let code = "Unknown";
-      let keyCode = character.charCodeAt(0);
-      if (/^[a-z]$/i.test(character)) code = `Key${character.toUpperCase()}`;
-      else if (/^[0-9]$/.test(character)) code = `Digit${character}`;
-      else if (character === " ") { code = "Space"; keyCode = 32; }
-      else if (character === "-") { code = "Minus"; keyCode = 189; }
-      consoleKey(code, character, keyCode, "keydown");
-      if (character !== " ") consoleKey(code, character, keyCode, "keypress", keyCode);
-      consoleKey(code, character, keyCode, "keyup");
-    }
-    consoleKey("Enter", "Enter", 13, "keydown");
-    consoleKey("Enter", "Enter", 13, "keyup");
-    // Leave the gameplay view visible if the engine keeps the console open
-    // after accepting the command.
-    setTimeout(() => {
-      if (!worker || !ready) return;
-      consoleKey("Backquote", "`", 192, "keydown");
-      consoleKey("Backquote", "`", 192, "keyup");
-    }, 75);
+  // GZDoom rejects addbot in its startup arguments because no map is active
+  // yet. bot_start.cfg binds F6 to addbot Rambo; send one ordinary gameplay
+  // key after MAP01 has started. This avoids relying on synthetic console text
+  // input, which is not implemented consistently by browser SDL builds.
+  function startLocalBot() {
+    if (botRequested || !worker || !ready) return;
+    botRequested = true;
+    setStatus("MAP01 started · adding local Rambo bot…", "ok");
+    sendKey("F6", "keydown", { key: "F6", keyCode: 117, which: 117 });
+    setTimeout(() => sendKey("F6", "keyup", { key: "F6", keyCode: 117, which: 117 }), 40);
   }
 
   function gameplayKey(event) {
@@ -249,14 +227,15 @@
       stage.classList.add("running");
       setStatus("Running the real stag_hunt_arena.wad · starting local Rambo bot…", "ok");
       updateLockStatus();
-      botTimer = setTimeout(() => {
-        botTimer = null;
-        consoleCommand("addbot Rambo");
-        setStatus("Running Stag Hunt Arena · 1 human + local Rambo bot", "ok");
-      }, 1500);
     } else if (message.type === "log" && message.stream === "stderr") {
       console.warn("[COMRAD WAD]", message.msg);
       if (/error|failed|cannot|abort/i.test(message.msg)) setStatus(message.msg, "error");
+    } else if (message.type === "log" && message.stream === "stdout") {
+      if (/^map0?1\s+-/i.test(message.msg.trim())) {
+        setTimeout(startLocalBot, 100);
+      } else if (/Rambo joined the game/i.test(message.msg)) {
+        setStatus("Running Stag Hunt Arena · 1 human + local Rambo bot", "ok");
+      }
     } else if (message.type === "abort" || message.type === "error") {
       ready = false;
       setStatus(`WASM engine stopped: ${message.reason || message.message}`, "error");
@@ -289,11 +268,12 @@
         "/freedoom2.wad": values[0],
         "/stag_hunt_arena.wad": values[1],
         "/bots.cfg": values[2],
-        "/gzdoom.pk3": values[3],
-        "/brightmaps.pk3": values[4],
-        "/game_support.pk3": values[5],
-        "/game_widescreen_gfx.pk3": values[6],
-        "/lights.pk3": values[7],
+        "/bot_start.cfg": values[3],
+        "/gzdoom.pk3": values[4],
+        "/brightmaps.pk3": values[5],
+        "/game_support.pk3": values[6],
+        "/game_widescreen_gfx.pk3": values[7],
+        "/lights.pk3": values[8],
       };
       canvas.width = WIDTH;
       canvas.height = HEIGHT;
@@ -315,6 +295,7 @@
           "-file", "stag_hunt_arena.wad",
           "-host", "1",
           "+viz_bots_path", "bots.cfg",
+          "+exec", "bot_start.cfg",
           "+map", "MAP01",
           "-skill", "3",
           "+vid_rendermode", "4",
