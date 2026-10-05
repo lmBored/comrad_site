@@ -334,7 +334,7 @@
         ],
         files,
         devMode: false,
-      }, Object.values(files).map((bytes) => bytes.buffer));
+      }, [offscreen, ...Object.values(files).map((bytes) => bytes.buffer)]);
       installInput();
       setStatus("Engine booting…", "info");
     } catch (error) {
