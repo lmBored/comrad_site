@@ -14,11 +14,10 @@ page does not contact a game server.
 - `stag_hunt_arena.wad` is the COMRAD scenario PWAD copied from
   `comrad/scenarios/`.
 - `bots.cfg` is the local Rambo bot definition copied from `comrad/play/`.
-- `bot_start.cfg` binds F6 to `addbot Rambo`; the browser sends that key after
-  MAP01 is active because GZDoom rejects bot creation during startup.
 
-The page hosts one local Doom player and adds Rambo after `MAP01` starts. The
-browser build has no second-client or network-multiplayer UI.
+The page asks GZDoom to start one local Rambo bot with its native `-bots`
+startup option. The browser build has no second-client or network-multiplayer
+UI.
 
 The port currently targets Chromium/WebGL2 because its browser harness uses
 `OffscreenCanvas` and WebAssembly JSPI. The older JavaScript remake remains in

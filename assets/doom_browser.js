@@ -24,7 +24,6 @@
     "freedoom2.wad",
     "stag_hunt_arena.wad",
     "bots.cfg",
-    "bot_start.cfg",
     "gzdoom.pk3",
     "brightmaps.pk3",
     "game_support.pk3",
@@ -35,7 +34,6 @@
   let worker = null;
   let started = false;
   let ready = false;
-  let botRequested = false;
 
   function setStatus(message, kind) {
     status.textContent = message;
@@ -82,18 +80,6 @@
         cancelable: true,
       },
     });
-  }
-
-  // GZDoom rejects addbot in its startup arguments because no map is active
-  // yet. bot_start.cfg binds F6 to addbot Rambo; send one ordinary gameplay
-  // key after MAP01 has started. This avoids relying on synthetic console text
-  // input, which is not implemented consistently by browser SDL builds.
-  function startLocalBot() {
-    if (botRequested || !worker || !ready) return;
-    botRequested = true;
-    setStatus("MAP01 started · adding local Rambo bot…", "ok");
-    sendKey("F6", "keydown", { key: "F6", keyCode: 117, which: 117 });
-    setTimeout(() => sendKey("F6", "keyup", { key: "F6", keyCode: 117, which: 117 }), 40);
   }
 
   function gameplayKey(event) {
@@ -227,14 +213,16 @@
       stage.classList.add("running");
       setStatus("Running the real stag_hunt_arena.wad · starting local Rambo bot…", "ok");
       updateLockStatus();
-    } else if (message.type === "log" && message.stream === "stderr") {
+    } else if (message.type === "log") {
       console.warn("[COMRAD WAD]", message.msg);
-      if (/error|failed|cannot|abort/i.test(message.msg)) setStatus(message.msg, "error");
-    } else if (message.type === "log" && message.stream === "stdout") {
-      if (/^map0?1\s+-/i.test(message.msg.trim())) {
-        setTimeout(startLocalBot, 100);
-      } else if (/Rambo joined the game/i.test(message.msg)) {
+      if (/Rambo joined the game/i.test(message.msg)) {
         setStatus("Running Stag Hunt Arena · 1 human + local Rambo bot", "ok");
+      } else if (/no bots\.cfg|couldn't find Rambo|unable to open .*bots/i.test(message.msg)) {
+        setStatus(`Bot startup failed: ${message.msg}`, "error");
+      } else if (message.stream === "stderr" &&
+                 !/emscripten_set_main_loop_timing/i.test(message.msg) &&
+                 /error|failed|abort/i.test(message.msg)) {
+        setStatus(message.msg, "error");
       }
     } else if (message.type === "abort" || message.type === "error") {
       ready = false;
@@ -267,13 +255,12 @@
       const files = {
         "/freedoom2.wad": values[0],
         "/stag_hunt_arena.wad": values[1],
-        "/bots.cfg": values[2],
-        "/bot_start.cfg": values[3],
-        "/gzdoom.pk3": values[4],
-        "/brightmaps.pk3": values[5],
-        "/game_support.pk3": values[6],
-        "/game_widescreen_gfx.pk3": values[7],
-        "/lights.pk3": values[8],
+        "/home/web_user/.config/zdoom/bots.cfg": values[2],
+        "/gzdoom.pk3": values[3],
+        "/brightmaps.pk3": values[4],
+        "/game_support.pk3": values[5],
+        "/game_widescreen_gfx.pk3": values[6],
+        "/lights.pk3": values[7],
       };
       canvas.width = WIDTH;
       canvas.height = HEIGHT;
@@ -293,11 +280,9 @@
         args: [
           "-iwad", "freedoom2.wad",
           "-file", "stag_hunt_arena.wad",
-          "-host", "1",
-          "+viz_bots_path", "bots.cfg",
-          "+exec", "bot_start.cfg",
-          "+map", "MAP01",
+          "-bots", "Rambo",
           "-skill", "3",
+          "+map", "MAP01",
           "+vid_rendermode", "4",
           "+vid_preferbackend", "1",
           "+vid_fullscreen", "0",

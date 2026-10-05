@@ -723,6 +723,10 @@ function handleBoot(m) {
     arguments: m.args || [],
     noInitialRun: false,
     preRun: [() => {
+      // GZDoom's native bot loader looks for bots.cfg in the zdoom user
+      // directory. The browser MEMFS starts empty, so create that directory
+      // before writing the self-hosted bot definitions.
+      self.Module.FS.mkdirTree('/home/web_user/.config/zdoom');
       for (const [path, bytes] of Object.entries(m.files || {})) {
         self.Module.FS.writeFile(path, bytes);
       }
