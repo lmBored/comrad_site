@@ -348,5 +348,5 @@
   startButton.addEventListener("click", start);
   lockButton.addEventListener("click", lockMouse);
   updateLockStatus();
-  setStatus("Static browser build · no backend required. Start the real WAD when ready.", "info");
+  setStatus("Start the game when ready.", "info");
 })();
