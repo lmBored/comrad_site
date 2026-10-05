@@ -723,9 +723,11 @@ function handleBoot(m) {
     arguments: m.args || [],
     noInitialRun: false,
     preRun: [() => {
-      // GZDoom's native bot loader looks for bots.cfg in the zdoom user
-      // directory. The browser MEMFS starts empty, so create that directory
-      // before writing the self-hosted bot definitions.
+      // GZDoom's POSIX build derives its user directory from HOME and
+      // GAMENAMELOWERCASE, i.e. /home/web_user/.config/gzdoom. The browser
+      // MEMFS starts empty, so create all supported bot-config locations
+      // before writing the self-hosted definitions.
+      self.Module.FS.mkdirTree('/home/web_user/.config/gzdoom');
       self.Module.FS.mkdirTree('/home/web_user/.config/zdoom');
       for (const [path, bytes] of Object.entries(m.files || {})) {
         self.Module.FS.writeFile(path, bytes);

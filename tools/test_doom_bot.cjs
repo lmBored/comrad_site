@@ -12,12 +12,19 @@ const botConfig = path.join(root, 'assets/doom/bots.cfg');
 
 test('browser launcher uses GZDoom native bot startup', () => {
   assert.match(launcher, /"-bots",\s*"Rambo"/);
+  assert.match(launcher, /ASSET_VERSION\s*=\s*"20261005-bot3"/);
+  assert.match(launcher, /\/home\/web_user\/\.config\/gzdoom\/bots\.cfg/);
   assert.match(launcher, /\/home\/web_user\/\.config\/zdoom\/bots\.cfg/);
+  assert.match(launcher, /"\/bots\.cfg"/);
+  assert.match(launcher, /const transferables = \[offscreen\]/);
+  assert.match(launcher, /transferred\.has\(bytes\.buffer\)/);
+  assert.doesNotMatch(launcher, /\[offscreen, \.\.\.Object\.values\(files\)\.map/);
   assert.doesNotMatch(launcher, /viz_bots_path|bot_start\.cfg|Backquote/);
   assert.doesNotMatch(launcher, /setTimeout\(startLocalBot/);
 });
 
 test('worker creates the GZDoom user config directory before MEMFS writes', () => {
+  assert.match(worker, /FS\.mkdirTree\('\/home\/web_user\/\.config\/gzdoom'\)/);
   assert.match(worker, /FS\.mkdirTree\('\/home\/web_user\/\.config\/zdoom'\)/);
 });
 

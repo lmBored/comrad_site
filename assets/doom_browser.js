@@ -18,6 +18,7 @@
   window.COMRAD_REAL_WAD_ACTIVE = true;
 
   const BASE = "assets/doom/";
+  const ASSET_VERSION = "20261005-bot3";
   const WIDTH = 640;
   const HEIGHT = 360;
   const ASSETS = [
@@ -194,6 +195,10 @@
 
   async function fetchAsset(name) {
     const url = new URL(BASE + name, document.baseURI);
+    // GitHub Pages may keep large WAD/PK3 responses in a browser cache even
+    // after the launcher itself has been updated. Version every local asset
+    // request when the embedded runtime contract changes.
+    url.searchParams.set("v", ASSET_VERSION);
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -255,7 +260,14 @@
       const files = {
         "/freedoom2.wad": values[0],
         "/stag_hunt_arena.wad": values[1],
+        // GZDoom's POSIX build derives GAME_DIR from GAMENAMELOWERCASE, so
+        // with HOME=/home/web_user the native bot loader checks this path.
+        "/home/web_user/.config/gzdoom/bots.cfg": values[2],
+        // Keep the legacy and share-directory locations populated as well;
+        // this makes the self-contained page work with older GZDoom-family
+        // browser builds that use zdoom/ or SHARE_DIR for bots.cfg.
         "/home/web_user/.config/zdoom/bots.cfg": values[2],
+        "/bots.cfg": values[2],
         "/gzdoom.pk3": values[3],
         "/brightmaps.pk3": values[4],
         "/game_support.pk3": values[5],
@@ -266,12 +278,24 @@
       canvas.height = HEIGHT;
       const offscreen = canvas.transferControlToOffscreen();
       const workerUrl = new URL("assets/doom/engine.worker.js", document.baseURI);
+      workerUrl.searchParams.set("v", ASSET_VERSION);
       worker = new Worker(workerUrl, { type: "classic" });
       worker.onmessage = (event) => handleWorkerMessage(event.data);
       worker.onerror = (event) => {
         setStatus(`WASM worker error: ${event.message || "unknown error"}`, "error");
         console.error(event);
       };
+      // Several MEMFS paths intentionally share the small bots.cfg buffer.
+      // Transfer each underlying ArrayBuffer once; listing the same buffer
+      // repeatedly makes structured cloning fail before the worker boots.
+      const transferables = [offscreen];
+      const transferred = new Set();
+      for (const bytes of Object.values(files)) {
+        if (!transferred.has(bytes.buffer)) {
+          transferred.add(bytes.buffer);
+          transferables.push(bytes.buffer);
+        }
+      }
       worker.postMessage({
         type: "boot",
         canvas: offscreen,
@@ -300,7 +324,7 @@
         ],
         files,
         devMode: false,
-      }, [offscreen, ...Object.values(files).map((bytes) => bytes.buffer)]);
+      }, transferables);
       installInput();
       setStatus("Engine booting…", "info");
     } catch (error) {

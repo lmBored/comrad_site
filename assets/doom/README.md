@@ -16,8 +16,10 @@ page does not contact a game server.
 - `bots.cfg` is the local Rambo bot definition copied from `comrad/play/`.
 
 The page asks GZDoom to start one local Rambo bot with its native `-bots`
-startup option. The browser build has no second-client or network-multiplayer
-UI.
+startup option. The bot definition is written to GZDoom's
+`/home/web_user/.config/gzdoom/bots.cfg` MEMFS path (with compatibility copies
+for older GZDoom-family builds). The browser build has no second-client or
+network-multiplayer UI.
 
 The port currently targets Chromium/WebGL2 because its browser harness uses
 `OffscreenCanvas` and WebAssembly JSPI. The older JavaScript remake remains in
